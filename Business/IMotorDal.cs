@@ -10,5 +10,6 @@ namespace Business
     public interface IMotorDal
     {
         public List<Motor> MotorControl();
+        public void RentMotorDal(int motorId);
     }
 }

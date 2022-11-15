@@ -11,11 +11,13 @@ namespace MotoHut2._0.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IMotorCollection _imotorCollection;
+        private readonly IMotor _imotor;
 
-        public HomeController(ILogger<HomeController> logger, IMotorCollection iMotorCollection)
+        public HomeController(ILogger<HomeController> logger, IMotorCollection iMotorCollection, IMotor iMotor)
         {
             _logger = logger;
             _imotorCollection = iMotorCollection;
+            _imotor = iMotor;
         }
 
         public IActionResult Index()
@@ -27,6 +29,16 @@ namespace MotoHut2._0.Controllers
             }
             ViewModel viewModel = new ViewModel { MotorModels = list};
             return View(viewModel);
+        }
+
+        [ActionName("RentMotor")]
+        //[Route("RentMotor/Home/{id:int}")]
+        public IActionResult RentMotor(int id)
+        {
+                _imotor.RentMotor(id);
+
+            
+            return View();
         }
 
         public IActionResult Privacy()

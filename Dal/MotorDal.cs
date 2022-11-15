@@ -9,7 +9,7 @@ namespace Dal
 {
     public class MotorDal : IMotorDal
     {
-        
+        private readonly string connectionstring = "Server=mssqlstud.fhict.local;Database=dbi391688;User Id=dbi391688;Password=Ikd2N)E105;";
         public static string ConnectServer()
         {
             string connectionstring = "Server=mssqlstud.fhict.local;Database=dbi391688;User Id=dbi391688;Password=Ikd2N)E105;";
@@ -31,7 +31,7 @@ namespace Dal
                 motor += dr["Prijs"].ToString();
 
             }
-            
+
             conn.Close();
 
             return motor;
@@ -39,8 +39,6 @@ namespace Dal
 
         public List<Motor> MotorControl()
         {
-            string connectionstring = "Server=mssqlstud.fhict.local;Database=dbi391688;User Id=dbi391688;Password=Ikd2N)E105;";
-
             List<Motor> controlList = new List<Motor>();
             using (var con = new SqlConnection(connectionstring))
             {
@@ -58,6 +56,18 @@ namespace Dal
                     }
                 }
                 return controlList;
+            }
+        }
+
+        public void RentMotorDal(int motorId)
+        {
+            using (var con = new SqlConnection(connectionstring))
+            {
+                var cmd = new SqlCommand("UPDATE Motor SET Status='Verhuurd' WHERE MotorId=@MotorId", con);
+                cmd.Parameters.AddWithValue("@MotorId", motorId);
+                con.Open();
+                cmd.ExecuteNonQuery();
+                
             }
         }
 

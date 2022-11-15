@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddSingleton<IMotorCollection, MotorCollection>();
 builder.Services.AddSingleton<IMotorDal, MotorDal>();
+builder.Services.AddSingleton<IMotor, Motor>();
 
 
 var app = builder.Build();

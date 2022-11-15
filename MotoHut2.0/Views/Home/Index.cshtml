@@ -6,17 +6,47 @@
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-    <div style="display:flex;justify-content:space-evenly">
+    <h2>Te huur</h2>
+    <div style="display:flex;justify-content:space-evenly;margin-bottom:100px">
     @foreach (var item in Model.MotorModels)
     {
-        <div style="border:solid;border-color:black;background-color:lightgreen;">
-            <p><h4 style="color:whitesmoke;background-color:black">Motor: @item.MotorId</h4></p><br/>
-            <p><b>Merk:</b> @item.Model</p><br/>
-            <p><b>Bouwjaar:</b> @item.Bouwjaar</p><br/>
-            <p><b>Prijs/dag:</b> @item.Prijs</p><br/>
-            <p><b>Status:</b> @item.Status</p><br/>
-        </div>
-        
+            if(item.Status == "Vrij")
+            {
+
+                <div style="border:solid;border-color:black;background-color:lightgreen;">
+
+                <p><h4 style="color:whitesmoke;background-color:black">Motor: @item.MotorId</h4></p><br/>
+                <p><b>Merk:</b> @item.Model</p><br/>
+                <p><b>Bouwjaar:</b> @item.Bouwjaar</p><br/>
+                <p><b>Prijs/dag:</b> @item.Prijs</p><br/>
+                <p><b>Status:</b> @item.Status</p><br/>
+                @Html.ActionLink(
+  "Rent Motor", 
+  "RentMotor",                         // controller action
+  "Home",        // controller
+  new { id = item.MotorId },         // action parameters aka route values
+  new { @class = "btn btn-info" }) 
+
+
+                </div>
+            } 
     }
+    </div>
+    <h2>Gehuurd</h2>
+    <div style="display:flex;justify-content:space-evenly">  
+    @foreach (var item in Model.MotorModels)
+    {
+            if(item.Status == "Verhuurd")
+            {
+                <div style="border:solid;border-color:black;background-color:lightgreen;">
+                <p><h4 style="color:whitesmoke;background-color:black">Motor: @item.MotorId</h4></p><br/>
+                <p><b>Merk:</b> @item.Model</p><br/>
+                <p><b>Bouwjaar:</b> @item.Bouwjaar</p><br/>
+                <p><b>Prijs/dag:</b> @item.Prijs</p><br/>
+                <p><b>Status:</b> @item.Status</p><br/>
+                </div>
+            }
+    }
+   
     </div>
 </div>
