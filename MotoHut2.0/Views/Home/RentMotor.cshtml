@@ -1,13 +1,22 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@model ViewModel;
+@model MotorViewModel;
 @{
     ViewData["Title"] = "Motor Rented";
 }
 <h1>@ViewData["Title"]</h1>
 
 <p>Motor succesfully rented</p>
+<h3>Details</h3>
+                    <div style="border:solid;border-color:black;background-color:lightgreen;">
+
+                <p><h4 style="color:whitesmoke;background-color:black">MotorId: @Model.MotorId</h4></p><br/>
+                <p><b>Merk:</b> @Model.Model</p><br/>
+                <p><b>Bouwjaar:</b> @Model.Bouwjaar</p><br/>
+                <p><b>Prijs/dag:</b> @Model.Prijs</p><br/>
+             </div>
+
 @Html.ActionLink(
   "Go back to mainpage", 
   "Index",                     

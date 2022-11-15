@@ -7,5 +7,7 @@ namespace Business
         void ReadyReader(SqlDataReader rdr);
 
         public void RentMotor(int motorId);
+        public Motor GetMotor(int motorId);
+        public void AddMotor(string merk, int bouwjaar, int prijs);
     }
 }

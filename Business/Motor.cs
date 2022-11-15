@@ -41,5 +41,11 @@ namespace Business
         {
             _motorDal.RentMotorDal(motorId);
         }
+
+        public Motor GetMotor(int motorId)
+        {
+            return _motorDal.GetMotor(motorId);
+        }
+        public void AddMotor(string merk, int bouwjaar, int prijs) { _motorDal.AddMotor(merk, bouwjaar, prijs); }
     }
 }

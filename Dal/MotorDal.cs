@@ -70,6 +70,41 @@ namespace Dal
                 
             }
         }
+        
+        public Motor GetMotor(int motorId)
+        {
+            Motor motor;
+            using (var con = new SqlConnection(connectionstring))
+            {
+                var cmd = new SqlCommand("SELECT * FROM Motor WHERE MotorId=@MotorId", con);
+                cmd.Parameters.AddWithValue("@MotorId", motorId);
+                con.Open();
+                SqlDataReader sdr = cmd.ExecuteReader();
+                
+                if (sdr.Read())
+                {
+                    motor = new Motor {MotorId = (int)sdr["MotorId"], VerhuurderId = (int)sdr["VerhuurderId"], Model = (string)sdr["Model"], Bouwjaar = (int)sdr["Bouwjaar"], Prijs = (int)sdr["Prijs"], Status = (string)sdr["Status"] };
+                }
+                else
+                {
+                    motor = null;
+                }
+            }
+            return motor;
+        }
+
+        public void AddMotor(string merk, int bouwjaar, int prijs)
+        {
+            using(var con = new SqlConnection(connectionstring))
+            {
+                var cmd = new SqlCommand("INSERT INTO Motor (VerhuurderId, Model, Bouwjaar, Prijs, Status) VALUES(1,@Model,@Bouwjaar,@Prijs,'Vrij')", con);
+                cmd.Parameters.AddWithValue("@Model", merk);
+                cmd.Parameters.AddWithValue("@Bouwjaar", bouwjaar);
+                cmd.Parameters.AddWithValue("@Prijs", prijs);
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
 
         //public object query(string query)
         //{

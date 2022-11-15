@@ -11,5 +11,7 @@ namespace Business
     {
         public List<Motor> MotorControl();
         public void RentMotorDal(int motorId);
+        public Motor GetMotor(int motorId);
+        public void AddMotor(string merk, int bouwjaar, int prijs);
     }
 }

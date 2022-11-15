@@ -35,15 +35,29 @@ namespace MotoHut2._0.Controllers
         //[Route("RentMotor/Home/{id:int}")]
         public IActionResult RentMotor(int id)
         {
-                _imotor.RentMotor(id);
+            _imotor.RentMotor(id);
 
+            Motor model = _imotor.GetMotor(id);
+
+            MotorViewModel viewModel = new MotorViewModel { MotorId = model.MotorId, Bouwjaar = model.Bouwjaar, Model = model.Model, Prijs = model.Prijs};
             
-            return View();
+            return View(viewModel);
         }
 
         public IActionResult Privacy()
         {
             return View();
+        }
+
+        public IActionResult AddMotor()
+        {
+            return View(); 
+        }
+        public ActionResult AddMotorForm(string txtMerk, int txtBouwjaar, int txtPrijs)
+        {
+            _imotor.AddMotor(txtMerk, txtBouwjaar, txtPrijs);
+
+            return RedirectToAction("Index");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
