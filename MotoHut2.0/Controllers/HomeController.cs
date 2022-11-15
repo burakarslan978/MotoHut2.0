@@ -31,18 +31,18 @@ namespace MotoHut2._0.Controllers
             return View(viewModel);
         }
 
-        [ActionName("RentMotor")]
+        //[ActionName("RentMotor")]
         //[Route("RentMotor/Home/{id:int}")]
-        public IActionResult RentMotor(int id)
-        {
-            _imotor.RentMotor(id);
+        //public IActionResult RentMotor1(int id)
+        //{
+        //    //_imotor.RentMotor(id, pickUpDate, returnDate);
 
-            Motor model = _imotor.GetMotor(id);
+        //    Motor model = _imotor.GetMotor(id);
 
-            MotorViewModel viewModel = new MotorViewModel { MotorId = model.MotorId, Bouwjaar = model.Bouwjaar, Model = model.Model, Prijs = model.Prijs};
+        //    MotorViewModel viewModel = new MotorViewModel { MotorId = model.MotorId, Bouwjaar = model.Bouwjaar, Model = model.Model, Prijs = model.Prijs};
             
-            return View(viewModel);
-        }
+        //    return View(viewModel);
+        //}
 
         public IActionResult Privacy()
         {
@@ -58,6 +58,17 @@ namespace MotoHut2._0.Controllers
             _imotor.AddMotor(txtMerk, txtBouwjaar, txtPrijs);
 
             return RedirectToAction("Index");
+        }
+        [HttpPost]
+        public ActionResult RentMotor(int id, DateTime pickUpDate, DateTime returnDate)
+        {
+            _imotor.RentMotor(id, pickUpDate, returnDate);
+
+            Motor model = _imotor.GetMotor(id);
+
+            MotorViewModel viewModel = new MotorViewModel { MotorId = model.MotorId, Bouwjaar = model.Bouwjaar, Model = model.Model, Prijs = model.Prijs };
+
+            return View(viewModel);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

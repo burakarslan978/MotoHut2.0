@@ -50,7 +50,7 @@ namespace Dal
                     {
                         //ControlFactory factory = new ControlFactory();
                         //IMotorCollection motor = factory.CreateControl(i);
-                        Motor motor = new Motor { MotorId = (int)rdr["MotorId"], VerhuurderId = (int)rdr["VerhuurderId"], Model = (string)rdr["Model"], Bouwjaar = (int)rdr["Bouwjaar"], Prijs = (int)rdr["Prijs"], Status = (string)rdr["Status"] };
+                        Motor motor = new Motor { MotorId = (int)rdr["MotorId"], VerhuurderId = 1, Model = (string)rdr["Model"], Bouwjaar = (int)rdr["Bouwjaar"], Prijs = (int)rdr["Prijs"], Status = (string)rdr["Status"] };
 
                         controlList.Add(motor);
                     }
@@ -59,14 +59,19 @@ namespace Dal
             }
         }
 
-        public void RentMotorDal(int motorId)
+        public void RentMotorDal(int motorId, DateTime ophaal, DateTime inlever)
         {
             using (var con = new SqlConnection(connectionstring))
             {
                 var cmd = new SqlCommand("UPDATE Motor SET Status='Verhuurd' WHERE MotorId=@MotorId", con);
+                var cmd2 = new SqlCommand("INSERT INTO HuurderMotor (MotorId,OphaalDatum,InleverDatum) VALUES(@MotorId,@OphaalDatum,@InleverDatum)", con);
                 cmd.Parameters.AddWithValue("@MotorId", motorId);
+                cmd2.Parameters.AddWithValue("@MotorId", motorId);
+                cmd2.Parameters.AddWithValue("@OphaalDatum", ophaal);
+                cmd2.Parameters.AddWithValue("@InleverDatum", inlever);
                 con.Open();
                 cmd.ExecuteNonQuery();
+                cmd2.ExecuteNonQuery();
                 
             }
         }
@@ -83,7 +88,7 @@ namespace Dal
                 
                 if (sdr.Read())
                 {
-                    motor = new Motor {MotorId = (int)sdr["MotorId"], VerhuurderId = (int)sdr["VerhuurderId"], Model = (string)sdr["Model"], Bouwjaar = (int)sdr["Bouwjaar"], Prijs = (int)sdr["Prijs"], Status = (string)sdr["Status"] };
+                    motor = new Motor {MotorId = (int)sdr["MotorId"], VerhuurderId = 1, Model = (string)sdr["Model"], Bouwjaar = (int)sdr["Bouwjaar"], Prijs = (int)sdr["Prijs"], Status = (string)sdr["Status"] };
                 }
                 else
                 {
@@ -97,10 +102,21 @@ namespace Dal
         {
             using(var con = new SqlConnection(connectionstring))
             {
-                var cmd = new SqlCommand("INSERT INTO Motor (VerhuurderId, Model, Bouwjaar, Prijs, Status) VALUES(1,@Model,@Bouwjaar,@Prijs,'Vrij')", con);
+                var cmd = new SqlCommand("INSERT INTO Motor (Model, Bouwjaar, Prijs, Status) VALUES(@Model,@Bouwjaar,@Prijs,'Vrij')", con);
                 cmd.Parameters.AddWithValue("@Model", merk);
                 cmd.Parameters.AddWithValue("@Bouwjaar", bouwjaar);
                 cmd.Parameters.AddWithValue("@Prijs", prijs);
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void DeleteMotor(int motorId)
+        {
+            using (var con = new SqlConnection(connectionstring))
+            {
+                var cmd = new SqlCommand("DELETE FROM Motor WHERE MotorId=@MotorId", con);
+                cmd.Parameters.AddWithValue("@MotorId", motorId);
                 con.Open();
                 cmd.ExecuteNonQuery();
             }

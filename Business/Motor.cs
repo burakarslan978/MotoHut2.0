@@ -27,25 +27,24 @@ namespace Business
             _motorDal = i;
         }
 
-        public void ReadyReader(SqlDataReader rdr)
-        {
-            this.MotorId = (int)rdr["MotorId"];
-            this.VerhuurderId = (int)rdr["VerhuurderId"];
-            this.Model = (string)rdr["Model"];
-            this.Bouwjaar = (int)rdr["Bouwjaar"];
-            this.Prijs = (int)rdr["Prijs"];
-            this.Status = (string)rdr["Status"];
-        }
 
-        public void RentMotor(int motorId)
+
+        public void RentMotor(int motorId, DateTime ophaal, DateTime inlever)
         {
-            _motorDal.RentMotorDal(motorId);
+            _motorDal.RentMotorDal(motorId, ophaal, inlever);
         }
 
         public Motor GetMotor(int motorId)
         {
             return _motorDal.GetMotor(motorId);
         }
-        public void AddMotor(string merk, int bouwjaar, int prijs) { _motorDal.AddMotor(merk, bouwjaar, prijs); }
+        public void AddMotor(string merk, int bouwjaar, int prijs) 
+        {
+            _motorDal.AddMotor(merk, bouwjaar, prijs);
+        }
+        public void DeleteMotor(int motorId)
+        {
+            _motorDal.DeleteMotor(motorId);
+        }
     }
 }

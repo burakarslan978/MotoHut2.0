@@ -4,10 +4,10 @@ namespace Business
 {
     public interface IMotor
     {
-        void ReadyReader(SqlDataReader rdr);
 
-        public void RentMotor(int motorId);
+        public void RentMotor(int motorId, DateTime ophaal, DateTime inlever);
         public Motor GetMotor(int motorId);
         public void AddMotor(string merk, int bouwjaar, int prijs);
+        public void DeleteMotor(int motorId);
     }
 }

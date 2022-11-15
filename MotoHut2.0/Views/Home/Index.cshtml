@@ -7,7 +7,7 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
     <h2>Te huur</h2>
-    <div style="display:flex;justify-content:space-evenly;margin-bottom:100px">
+    <div style="display:flex;justify-content:space-evenly;margin-bottom:100px;flex-wrap:wrap;">
     @foreach (var item in Model.MotorModels)
     {
             if(item.Status == "Vrij")
@@ -20,20 +20,32 @@
                 <p><b>Bouwjaar:</b> @item.Bouwjaar</p><br/>
                 <p><b>Prijs/dag:</b> @item.Prijs</p><br/>
                 <p><b>Status:</b> @item.Status</p><br/>
-                @Html.ActionLink(
-  "Rent Motor", 
-  "RentMotor",                         // controller action
-  "Home",        // controller
-  new { id = item.MotorId },         // action parameters aka route values
-  new { @class = "btn btn-info" }) 
-
-
+                <form action="@Url.Action("RentMotor","Home")" method="post">
+    <table>
+        <tr>
+            <td><b>MotorId:</b> </td>
+            <td><input type="number" name="id" id="id" value="@item.MotorId" readonly/></td>
+        </tr>
+        <tr>
+            <td><b>Ophaaldatum:</b> </td>
+            <td><input type="datetime-local" name="pickUpDate" id="pickUpDate"/></td>
+        </tr>
+        <tr>
+            <td><b>Inleverdatum:</b> </td>
+            <td><input type="datetime-local" name="returnDate" id="returnDate"/></td>
+        </tr>
+        <tr>
+            <td colspan="2"><input type="submit" value="Rent Motor" class="btn btn-info my-4" /></td>
+        </tr>
+    </table>
+</form>
+           
                 </div>
             } 
     }
     </div>
     <h2>Gehuurd</h2>
-    <div style="display:flex;justify-content:space-evenly">  
+    <div style="display:flex;justify-content:space-evenly;flex-wrap:wrap;">  
     @foreach (var item in Model.MotorModels)
     {
             if(item.Status == "Verhuurd")
