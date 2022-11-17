@@ -4,6 +4,7 @@ using System.Diagnostics;
 using Dal;
 using Business;
 using MotoHut2._0.Collections;
+using Business.Interface;
 
 namespace MotoHut2._0.Controllers
 {
@@ -12,12 +13,14 @@ namespace MotoHut2._0.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IMotorCollection _imotorCollection;
         private readonly IMotor _imotor;
+        private readonly IHuurderMotorCollection _ihuurderMotorCollection;
 
-        public HomeController(ILogger<HomeController> logger, IMotorCollection iMotorCollection, IMotor iMotor)
+        public HomeController(ILogger<HomeController> logger, IMotorCollection iMotorCollection, IMotor iMotor, IHuurderMotorCollection iHuurderMotorCollection)
         {
             _logger = logger;
             _imotorCollection = iMotorCollection;
             _imotor = iMotor;
+            _ihuurderMotorCollection = iHuurderMotorCollection;
         }
 
         public IActionResult Index()
@@ -52,6 +55,17 @@ namespace MotoHut2._0.Controllers
         public IActionResult AddMotor()
         {
             return View(); 
+        }
+
+        public IActionResult HuurLijst()
+        {
+            List<HuurderMotorViewModel> list = new List<HuurderMotorViewModel>();
+            foreach (var item in _ihuurderMotorCollection.GetHuurderMotorList())
+            {
+                list.Add(new HuurderMotorViewModel { HuurderMotorId = item.HuurderMotorId, MotorId = item.MotorId, HuurderId = item.HuurderId, OphaalDatum = item.OphaalDatum, InleverDatum = item.InleverDatum});
+            }
+            ViewModel viewModel = new ViewModel { HuurderMotorModels = list };
+            return View(viewModel);
         }
         public ActionResult AddMotorForm(string txtMerk, int txtBouwjaar, int txtPrijs)
         {

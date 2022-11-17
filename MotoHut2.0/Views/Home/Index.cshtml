@@ -22,7 +22,7 @@
                 <p><b>Status:</b> @item.Status</p><br/>
                 <form action="@Url.Action("RentMotor","Home")" method="post">
     <table>
-        <tr>
+        <tr style="display:none">
             <td><b>MotorId:</b> </td>
             <td><input type="number" name="id" id="id" value="@item.MotorId" readonly/></td>
         </tr>

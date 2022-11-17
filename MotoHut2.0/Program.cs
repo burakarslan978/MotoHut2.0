@@ -1,4 +1,5 @@
 using Business;
+using Business.Interface;
 using Dal;
 using MotoHut2._0;
 using MotoHut2._0.Collections;
@@ -10,6 +11,10 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddSingleton<IMotorCollection, MotorCollection>();
 builder.Services.AddSingleton<IMotorDal, MotorDal>();
 builder.Services.AddSingleton<IMotor, Motor>();
+builder.Services.AddSingleton<IHuurderMotorCollection, HuurderMotorCollection>();
+builder.Services.AddSingleton<IHuurderMotor, HuurderMotor>();
+builder.Services.AddSingleton<IHuurderMotorDal, HuurderMotorDal>();
+
 
 
 var app = builder.Build();
