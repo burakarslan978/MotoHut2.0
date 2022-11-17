@@ -5,6 +5,7 @@ using Dal;
 using Business;
 using MotoHut2._0.Collections;
 using Business.Interface;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace MotoHut2._0.Controllers
 {
@@ -59,12 +60,23 @@ namespace MotoHut2._0.Controllers
 
         public IActionResult HuurLijst()
         {
-            List<HuurderMotorViewModel> list = new List<HuurderMotorViewModel>();
+            List<SelectListItem> items = new List<SelectListItem>();
+
+
+            List<MotorViewModel> list1 = new List<MotorViewModel>();
+            foreach (var item in _imotorCollection.ConvertDataToView())
+            {
+                list1.Add(new MotorViewModel { MotorId = item.MotorId, VerhuurderId = item.VerhuurderId, Bouwjaar = item.Bouwjaar, Prijs = item.Prijs, Model = item.Model, Status = item.Status });
+                items.Add(new SelectListItem { Text = ""+item.MotorId+": "+item.Bouwjaar+" "+item.Model+"", Value = item.MotorId.ToString() });
+            }
+
+            List<HuurderMotorViewModel> list2 = new List<HuurderMotorViewModel>();
             foreach (var item in _ihuurderMotorCollection.GetHuurderMotorList())
             {
-                list.Add(new HuurderMotorViewModel { HuurderMotorId = item.HuurderMotorId, MotorId = item.MotorId, HuurderId = item.HuurderId, OphaalDatum = item.OphaalDatum, InleverDatum = item.InleverDatum});
+                list2.Add(new HuurderMotorViewModel { HuurderMotorId = item.HuurderMotorId, MotorId = item.MotorId, HuurderId = item.HuurderId, OphaalDatum = item.OphaalDatum, InleverDatum = item.InleverDatum});
             }
-            ViewModel viewModel = new ViewModel { HuurderMotorModels = list };
+            
+            ViewModel viewModel = new ViewModel { HuurderMotorModels = list2, MotorModels = list1, Motors = items };
             return View(viewModel);
         }
         public ActionResult AddMotorForm(string txtMerk, int txtBouwjaar, int txtPrijs)
@@ -89,6 +101,25 @@ namespace MotoHut2._0.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public ActionResult HuurLijstSelected(int MotorId)
+        {
+            List<SelectListItem> items = new List<SelectListItem>();
+            foreach (var item in _imotorCollection.ConvertDataToView())
+            { 
+                items.Add(new SelectListItem { Text = "" + item.MotorId + ": " + item.Bouwjaar + " " + item.Model + "", Value = item.MotorId.ToString() });
+            }
+
+            List<HuurderMotorViewModel> list2 = new List<HuurderMotorViewModel>();
+            foreach (var item in _ihuurderMotorCollection.GetHuurderMotorListForMotor(MotorId))
+            {
+                list2.Add(new HuurderMotorViewModel { HuurderMotorId = item.HuurderMotorId, MotorId = item.MotorId, HuurderId = item.HuurderId, OphaalDatum = item.OphaalDatum, InleverDatum = item.InleverDatum });
+            }
+
+            ViewModel viewModel = new ViewModel { HuurderMotorModels = list2, Motors = items};
+            return View(viewModel);
+            
         }
     }
 }

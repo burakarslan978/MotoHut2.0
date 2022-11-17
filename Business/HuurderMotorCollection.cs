@@ -19,5 +19,10 @@ namespace Business
         {
             return _huurderMotorDal.GetHuurderMotorList();
         }
+
+        public List<HuurderMotor> GetHuurderMotorListForMotor(int motorId)
+        {
+            return _huurderMotorDal.GetHuurderMotorListForMotor(motorId);
+        }
     }
 }

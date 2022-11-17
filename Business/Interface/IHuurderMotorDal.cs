@@ -10,5 +10,6 @@ namespace Business
     public interface IHuurderMotorDal
     {
         public List<HuurderMotor> GetHuurderMotorList();
+        public List<HuurderMotor> GetHuurderMotorListForMotor(int motorId);
     }
 }

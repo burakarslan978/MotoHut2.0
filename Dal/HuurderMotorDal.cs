@@ -33,5 +33,28 @@ namespace Dal
                 return controlList;
             }
         }
+
+        public List<HuurderMotor> GetHuurderMotorListForMotor(int motorId)
+        {
+            List<HuurderMotor> controlList = new List<HuurderMotor>();
+            using (var con = new SqlConnection(connectionstring))
+            {
+                using (var cmd = new SqlCommand("SELECT * FROM HuurderMotor WHERE MotorId=@MotorID", con))
+                {
+                    cmd.Parameters.AddWithValue("@MotorId", motorId);
+                    con.Open();
+                    SqlDataReader rdr = cmd.ExecuteReader();
+                    while (rdr.Read())
+                    {
+                        //ControlFactory factory = new ControlFactory();
+                        //IMotorCollection motor = factory.CreateControl(i);
+                        HuurderMotor huurdermotor = new HuurderMotor { HuurderMotorId = (int)rdr["HuurderMotorId"], MotorId = (int)rdr["MotorId"], HuurderId = 1, OphaalDatum = (DateTime)rdr["OphaalDatum"], InleverDatum = (DateTime)rdr["InleverDatum"] };
+
+                        controlList.Add(huurdermotor);
+                    }
+                }
+                return controlList;
+            }
+        }
     }
 }

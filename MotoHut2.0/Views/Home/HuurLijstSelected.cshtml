@@ -2,6 +2,11 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+}
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
     ViewData["Title"] = "Huur overzicht";
 }
 @model ViewModel;
@@ -15,7 +20,8 @@
 
 <h1>Overzicht van gehuurde motoren</h1>
 <table style="border: 1px solid;width:75%;">
-@foreach (var item in Model.HuurderMotorModels)
+    @if(Model.HuurderMotorModels.Count > 0){
+        foreach (var item in Model.HuurderMotorModels)
 {
     <tr style="border-top: 1px solid;">
         <td><b>HuurderMotorId:</b></td>
@@ -38,4 +44,10 @@
         <td>@item.InleverDatum</td>
     </tr>
 }
+    } else{
+        <tr>
+            <td><h3>Geen huurdata gevonden</h3></td>
+        </tr>
+    }
+
 </table>
