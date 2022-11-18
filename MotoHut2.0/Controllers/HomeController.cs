@@ -15,13 +15,15 @@ namespace MotoHut2._0.Controllers
         private readonly IMotorCollection _imotorCollection;
         private readonly IMotor _imotor;
         private readonly IHuurderMotorCollection _ihuurderMotorCollection;
+        private readonly IHuurderMotor _ihuurderMotor;
 
-        public HomeController(ILogger<HomeController> logger, IMotorCollection iMotorCollection, IMotor iMotor, IHuurderMotorCollection iHuurderMotorCollection)
+        public HomeController(ILogger<HomeController> logger, IMotorCollection iMotorCollection, IMotor iMotor, IHuurderMotorCollection iHuurderMotorCollection, IHuurderMotor iHuurderMotor)
         {
             _logger = logger;
             _imotorCollection = iMotorCollection;
             _imotor = iMotor;
             _ihuurderMotorCollection = iHuurderMotorCollection;
+            _ihuurderMotor = iHuurderMotor;
         }
 
         public IActionResult Index()
@@ -114,12 +116,24 @@ namespace MotoHut2._0.Controllers
             List<HuurderMotorViewModel> list2 = new List<HuurderMotorViewModel>();
             foreach (var item in _ihuurderMotorCollection.GetHuurderMotorListForMotor(MotorId))
             {
-                list2.Add(new HuurderMotorViewModel { HuurderMotorId = item.HuurderMotorId, MotorId = item.MotorId, HuurderId = item.HuurderId, OphaalDatum = item.OphaalDatum, InleverDatum = item.InleverDatum });
+                list2.Add(new HuurderMotorViewModel { HuurderMotorId = item.HuurderMotorId, MotorId = item.MotorId, HuurderId = item.HuurderId, OphaalDatum = item.OphaalDatum, InleverDatum = item.InleverDatum, IsGeaccepteerd = item.IsGeaccepteerd, IsGeweigerd = item.IsGeweigerd });
             }
 
             ViewModel viewModel = new ViewModel { HuurderMotorModels = list2, Motors = items};
             return View(viewModel);
             
+        }
+
+        public ActionResult AcceptRent(int HuurderMotorId)
+        {
+            _ihuurderMotor.AcceptOrDeclineRent(HuurderMotorId, "Accept");
+            return RedirectToAction("HuurLijst");
+        }
+
+        public ActionResult DeclineRent(int HuurderMotorId)
+        {
+            _ihuurderMotor.AcceptOrDeclineRent(HuurderMotorId, "Decline");
+            return RedirectToAction("HuurLijst");
         }
     }
 }

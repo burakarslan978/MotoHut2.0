@@ -23,9 +23,7 @@ namespace Dal
                     SqlDataReader rdr = cmd.ExecuteReader();
                     while (rdr.Read())
                     {
-                        //ControlFactory factory = new ControlFactory();
-                        //IMotorCollection motor = factory.CreateControl(i);
-                        HuurderMotor huurdermotor = new HuurderMotor { HuurderMotorId = (int)rdr["HuurderMotorId"], MotorId = (int)rdr["MotorId"], HuurderId = 1, OphaalDatum = (DateTime)rdr["OphaalDatum"], InleverDatum = (DateTime)rdr["InleverDatum"] };
+                        HuurderMotor huurdermotor = new HuurderMotor { HuurderMotorId = (int)rdr["HuurderMotorId"], MotorId = (int)rdr["MotorId"], HuurderId = 1, OphaalDatum = (DateTime)rdr["OphaalDatum"], InleverDatum = (DateTime)rdr["InleverDatum"], IsGeaccepteerd = (bool)rdr["IsGeaccepteerd"], IsGeweigerd = (bool)rdr["IsGeweigerd"] };
 
                         controlList.Add(huurdermotor);
                     }
@@ -46,14 +44,35 @@ namespace Dal
                     SqlDataReader rdr = cmd.ExecuteReader();
                     while (rdr.Read())
                     {
-                        //ControlFactory factory = new ControlFactory();
-                        //IMotorCollection motor = factory.CreateControl(i);
-                        HuurderMotor huurdermotor = new HuurderMotor { HuurderMotorId = (int)rdr["HuurderMotorId"], MotorId = (int)rdr["MotorId"], HuurderId = 1, OphaalDatum = (DateTime)rdr["OphaalDatum"], InleverDatum = (DateTime)rdr["InleverDatum"] };
+                        HuurderMotor huurdermotor = new HuurderMotor { HuurderMotorId = (int)rdr["HuurderMotorId"], MotorId = (int)rdr["MotorId"], HuurderId = 1, OphaalDatum = (DateTime)rdr["OphaalDatum"], InleverDatum = (DateTime)rdr["InleverDatum"], IsGeaccepteerd = (bool)rdr["IsGeaccepteerd"], IsGeweigerd = (bool)rdr["IsGeweigerd"] };
 
                         controlList.Add(huurdermotor);
                     }
                 }
                 return controlList;
+            }
+        }
+
+        public void AcceptOrDeclineRent(int huurderMotorId, string decision)
+        {
+            using (var con = new SqlConnection(connectionstring))
+            {
+                string _decision = "";
+                if (decision == "Accept")
+                {
+                    _decision = "IsGeaccepteerd";
+                }
+                else if (decision == "Decline")
+                {
+                    _decision = "IsGeweigerd";
+                }
+                var cmd = new SqlCommand("UPDATE HuurderMotor SET "+_decision+"=1 WHERE HuurderMotorId=@HuurderMotorId", con);
+                
+                
+                cmd.Parameters.AddWithValue("@HuurderMotorId", huurderMotorId);
+                con.Open();
+                cmd.ExecuteNonQuery();
+
             }
         }
     }

@@ -8,5 +8,6 @@ namespace Business.Interface
 {
     public interface IHuurderMotor
     {
+        public void AcceptOrDeclineRent(int huurderMotorId, string decision);
     }
 }

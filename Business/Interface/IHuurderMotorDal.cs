@@ -11,5 +11,6 @@ namespace Business
     {
         public List<HuurderMotor> GetHuurderMotorList();
         public List<HuurderMotor> GetHuurderMotorListForMotor(int motorId);
+        public void AcceptOrDeclineRent(int huurderMotorId, string decision);
     }
 }

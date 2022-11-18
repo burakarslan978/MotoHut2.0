@@ -7,5 +7,7 @@
         public int HuurderId { get; set; }
         public DateTime OphaalDatum { get; set; }
         public DateTime InleverDatum { get; set; }
+        public bool IsGeaccepteerd { get; set; }
+        public bool IsGeweigerd { get; set; }
     }
 }
