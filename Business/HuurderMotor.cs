@@ -24,9 +24,13 @@ namespace Business
             _huurderMotorDal = i;
         }
 
-        public void AcceptOrDeclineRent(int huurderMotorId, string decision)
+        public void AcceptOrDeclineRent(int huurderMotorId, string acceptOrDecline)
         {
-            _huurderMotorDal.AcceptOrDeclineRent(huurderMotorId, decision);
+            _huurderMotorDal.AcceptOrDeclineRent(huurderMotorId, acceptOrDecline);
+        }
+        public bool CheckAvailability(int motorId, DateTime ophaal, DateTime inlever)
+        {
+            return _huurderMotorDal.CheckAvailability(motorId, ophaal, inlever);
         }
     }
 }

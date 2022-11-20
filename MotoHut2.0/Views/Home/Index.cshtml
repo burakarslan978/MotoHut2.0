@@ -10,16 +10,16 @@
     <div style="display:flex;justify-content:space-evenly;margin-bottom:100px;flex-wrap:wrap;">
     @foreach (var item in Model.MotorModels)
     {
-            if(item.Status == "Vrij")
+            if(item.Huurbaar == true)
             {
 
-                <div style="border:solid;border-color:black;background-color:lightgreen;">
+                <div style="border:solid;border-color:black;background-color:lightgreen;margin-bottom:30px;">
 
                 <p><h4 style="color:whitesmoke;background-color:black">Motor: @item.MotorId</h4></p><br/>
                 <p><b>Merk:</b> @item.Model</p><br/>
                 <p><b>Bouwjaar:</b> @item.Bouwjaar</p><br/>
                 <p><b>Prijs/dag:</b> @item.Prijs</p><br/>
-                <p><b>Status:</b> @item.Status</p><br/>
+                <p><b>Te huur:</b> Ja</p><br/>
                 <form action="@Url.Action("RentMotor","Home")" method="post">
     <table>
         <tr style="display:none">
@@ -28,34 +28,35 @@
         </tr>
         <tr>
             <td><b>Ophaaldatum:</b> </td>
-            <td><input type="datetime-local" name="pickUpDate" id="pickUpDate"/></td>
+            <td><input type="datetime-local" name="pickUpDate" id="pickUpDate" required/></td>
         </tr>
         <tr>
             <td><b>Inleverdatum:</b> </td>
-            <td><input type="datetime-local" name="returnDate" id="returnDate"/></td>
+            <td><input type="datetime-local" name="returnDate" id="returnDate"  required/></td>
         </tr>
         <tr>
             <td colspan="2"><input type="submit" value="Rent Motor" class="btn btn-info my-4" /></td>
         </tr>
     </table>
 </form>
+@ViewBag.notSuccess
            
                 </div>
             } 
     }
     </div>
-    <h2>Gehuurd</h2>
+    <h2>Niet te huur</h2>
     <div style="display:flex;justify-content:space-evenly;flex-wrap:wrap;">  
     @foreach (var item in Model.MotorModels)
     {
-            if(item.Status == "Verhuurd")
+            if(item.Huurbaar == false)
             {
                 <div style="border:solid;border-color:black;background-color:lightgreen;">
                 <p><h4 style="color:whitesmoke;background-color:black">Motor: @item.MotorId</h4></p><br/>
                 <p><b>Merk:</b> @item.Model</p><br/>
                 <p><b>Bouwjaar:</b> @item.Bouwjaar</p><br/>
                 <p><b>Prijs/dag:</b> @item.Prijs</p><br/>
-                <p><b>Status:</b> @item.Status</p><br/>
+                <p><b>Te huur:</b> Nee</p><br/>
                 </div>
             }
     }

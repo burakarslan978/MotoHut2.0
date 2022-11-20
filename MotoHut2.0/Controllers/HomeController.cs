@@ -31,24 +31,11 @@ namespace MotoHut2._0.Controllers
             List<MotorViewModel> list = new List<MotorViewModel>();
             foreach(var item in _imotorCollection.ConvertDataToView())
             {
-                list.Add(new MotorViewModel { MotorId = item.MotorId, VerhuurderId = item.VerhuurderId, Bouwjaar = item.Bouwjaar, Prijs = item.Prijs, Model = item.Model, Status = item.Status });
+                list.Add(new MotorViewModel { MotorId = item.MotorId, VerhuurderId = item.VerhuurderId, Bouwjaar = item.Bouwjaar, Prijs = item.Prijs, Model = item.Model, Huurbaar = item.Huurbaar });
             }
             ViewModel viewModel = new ViewModel { MotorModels = list};
             return View(viewModel);
         }
-
-        //[ActionName("RentMotor")]
-        //[Route("RentMotor/Home/{id:int}")]
-        //public IActionResult RentMotor1(int id)
-        //{
-        //    //_imotor.RentMotor(id, pickUpDate, returnDate);
-
-        //    Motor model = _imotor.GetMotor(id);
-
-        //    MotorViewModel viewModel = new MotorViewModel { MotorId = model.MotorId, Bouwjaar = model.Bouwjaar, Model = model.Model, Prijs = model.Prijs};
-            
-        //    return View(viewModel);
-        //}
 
         public IActionResult Privacy()
         {
@@ -68,7 +55,7 @@ namespace MotoHut2._0.Controllers
             List<MotorViewModel> list1 = new List<MotorViewModel>();
             foreach (var item in _imotorCollection.ConvertDataToView())
             {
-                list1.Add(new MotorViewModel { MotorId = item.MotorId, VerhuurderId = item.VerhuurderId, Bouwjaar = item.Bouwjaar, Prijs = item.Prijs, Model = item.Model, Status = item.Status });
+                list1.Add(new MotorViewModel { MotorId = item.MotorId, VerhuurderId = item.VerhuurderId, Bouwjaar = item.Bouwjaar, Prijs = item.Prijs, Model = item.Model, Huurbaar = item.Huurbaar });
                 items.Add(new SelectListItem { Text = ""+item.MotorId+": "+item.Bouwjaar+" "+item.Model+"", Value = item.MotorId.ToString() });
             }
 
@@ -90,11 +77,21 @@ namespace MotoHut2._0.Controllers
         [HttpPost]
         public ActionResult RentMotor(int id, DateTime pickUpDate, DateTime returnDate)
         {
-            _imotor.RentMotor(id, pickUpDate, returnDate);
+            Motor model = new Motor();
+            if (_ihuurderMotor.CheckAvailability(id, pickUpDate, returnDate) == true)
+            {
+                _imotor.RentMotor(id, pickUpDate, returnDate);
+                model = _imotor.GetMotor(id);
+            }
+            else
+            {
+                model.MotorId = 0;
+            }
 
-            Motor model = _imotor.GetMotor(id);
 
-            MotorViewModel viewModel = new MotorViewModel { MotorId = model.MotorId, Bouwjaar = model.Bouwjaar, Model = model.Model, Prijs = model.Prijs };
+            MotorViewModel motorViewModel = new MotorViewModel { MotorId = model.MotorId, Bouwjaar = model.Bouwjaar, Model = model.Model, Prijs = model.Prijs };
+            HuurderMotorViewModel huurderMotorViewModel = new HuurderMotorViewModel { OphaalDatum = pickUpDate, InleverDatum = returnDate};
+            ViewModel viewModel = new ViewModel { MotorViewModel = motorViewModel, HuurderMotorViewModel = huurderMotorViewModel };
 
             return View(viewModel);
         }
@@ -127,13 +124,13 @@ namespace MotoHut2._0.Controllers
         public ActionResult AcceptRent(int HuurderMotorId)
         {
             _ihuurderMotor.AcceptOrDeclineRent(HuurderMotorId, "Accept");
-            return RedirectToAction("HuurLijst");
+            return RedirectToAction("HuurLijstSelected");
         }
 
         public ActionResult DeclineRent(int HuurderMotorId)
         {
             _ihuurderMotor.AcceptOrDeclineRent(HuurderMotorId, "Decline");
-            return RedirectToAction("HuurLijst");
+            return RedirectToAction("HuurLijstSelected");
         }
     }
 }

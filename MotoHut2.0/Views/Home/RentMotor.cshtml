@@ -1,21 +1,31 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@model MotorViewModel;
+@model ViewModel;
 @{
     ViewData["Title"] = "Motor Rented";
 }
 <h1>@ViewData["Title"]</h1>
-
-<p>Motor succesfully rented</p>
+@if(Model.MotorViewModel.MotorId != 0)
+{
+    <p>Aanvraag om motor te huren is verstuurd</p>
 <h3>Details</h3>
                     <div style="border:solid;border-color:black;background-color:lightgreen;">
 
-                <p><h4 style="color:whitesmoke;background-color:black">MotorId: @Model.MotorId</h4></p><br/>
-                <p><b>Merk:</b> @Model.Model</p><br/>
-                <p><b>Bouwjaar:</b> @Model.Bouwjaar</p><br/>
-                <p><b>Prijs/dag:</b> @Model.Prijs</p><br/>
-             </div>
+                <p><h4 style="color:whitesmoke;background-color:black">MotorId: @Model.MotorViewModel.MotorId</h4></p><br/>
+                <p><b>Merk:</b> @Model.MotorViewModel.Model</p><br/>
+                <p><b>Bouwjaar:</b> @Model.MotorViewModel.Bouwjaar</p><br/>
+                <p><b>Prijs/dag:</b> @Model.MotorViewModel.Prijs</p><br/>
+                <p><b>Ophaaldatum:</b> @Model.HuurderMotorViewModel.OphaalDatum</p><br/>
+                <p><b>Inleverdatum:</b>  @Model.HuurderMotorViewModel.InleverDatum</p>
+    </div>
+}
+else
+{
+    ViewData["Title"] = "Motor Not Rented";
+    <h2>Motor is niet beschikbaar op gekozen datums</h2>
+}
+
 
 @Html.ActionLink(
   "Go back to mainpage", 

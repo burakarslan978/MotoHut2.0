@@ -8,5 +8,7 @@ namespace MotoHut2._0.Models
         public List<HuurderMotorViewModel> HuurderMotorModels { get; set; }
         public int[] MotorId { get; set; }
         public IEnumerable<SelectListItem> Motors { get; set; }
+        public MotorViewModel MotorViewModel { get; set; }
+        public HuurderMotorViewModel HuurderMotorViewModel { get; set; }
     }
 }

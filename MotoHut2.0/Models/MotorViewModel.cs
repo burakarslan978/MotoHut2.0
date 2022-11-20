@@ -7,6 +7,6 @@
         public int Bouwjaar { get; set; }
         public int Prijs { get; set; }
         public string Model { get; set; }
-        public string Status { get; set; }
+        public bool Huurbaar { get; set; }
     }
 }

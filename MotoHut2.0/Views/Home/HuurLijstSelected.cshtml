@@ -19,10 +19,11 @@
 }
 
 <h1>Overzicht van gehuurde motoren</h1>
-<table style="border: 1px solid;width:75%;">
+
     @if(Model.HuurderMotorModels.Count > 0){
         foreach (var item in Model.HuurderMotorModels)
-{
+    {
+    <table style="border: 5px solid;width:75%;margin-bottom:50px;">
     <tr style="border-top: 1px solid;">
         <td><b>HuurderMotorId:</b></td>
         <td>@item.HuurderMotorId</td>
@@ -60,19 +61,21 @@
             } else if(item.IsGeaccepteerd == true)
             {
                 <tr style="border-bottom: 1px solid;color:whitesmoke;background-color:darkolivegreen;margin-bottom:20px;"> 
-                    <td colspan="2"><h2>Huur is geaccepteerd</h2></td>
+                    <td colspan="2"><h3>Huur is geaccepteerd</h3></td>
                 </tr>
             } else if(item.IsGeweigerd == true)
             {
                 <tr style="border-bottom: 1px solid;color:whitesmoke;background-color:darkred;margin-bottom:20px;">
-                    <td colspan="2"><h2>Huur is geweigerd</h2></td>
+                    <td colspan="2"><h3>Huur is geweigerd</h3></td>
                 </tr>
             }
+            </table>
         }
     } else{
-        <tr style="border-bottom: 1px solid;">
+        <table>
+        <tr>
             <td><h3>Geen huurdata gevonden</h3></td>
         </tr>
+        </table>
     }
 
-</table>

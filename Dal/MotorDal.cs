@@ -50,7 +50,7 @@ namespace Dal
                     {
                         //ControlFactory factory = new ControlFactory();
                         //IMotorCollection motor = factory.CreateControl(i);
-                        Motor motor = new Motor { MotorId = (int)rdr["MotorId"], VerhuurderId = 1, Model = (string)rdr["Model"], Bouwjaar = (int)rdr["Bouwjaar"], Prijs = (int)rdr["Prijs"], Status = (string)rdr["Status"] };
+                        Motor motor = new Motor { MotorId = (int)rdr["MotorId"], VerhuurderId = 1, Model = (string)rdr["Model"], Bouwjaar = (int)rdr["Bouwjaar"], Prijs = (int)rdr["Prijs"], Huurbaar = (bool)rdr["Huurbaar"] };
 
                         controlList.Add(motor);
                     }
@@ -63,15 +63,12 @@ namespace Dal
         {
             using (var con = new SqlConnection(connectionstring))
             {
-                var cmd = new SqlCommand("UPDATE Motor SET Status='Verhuurd' WHERE MotorId=@MotorId", con);
-                var cmd2 = new SqlCommand("INSERT INTO HuurderMotor (MotorId,OphaalDatum,InleverDatum) VALUES(@MotorId,@OphaalDatum,@InleverDatum)", con);
+                var cmd = new SqlCommand("INSERT INTO HuurderMotor (MotorId,OphaalDatum,InleverDatum) VALUES(@MotorId,@OphaalDatum,@InleverDatum)", con);
                 cmd.Parameters.AddWithValue("@MotorId", motorId);
-                cmd2.Parameters.AddWithValue("@MotorId", motorId);
-                cmd2.Parameters.AddWithValue("@OphaalDatum", ophaal);
-                cmd2.Parameters.AddWithValue("@InleverDatum", inlever);
+                cmd.Parameters.AddWithValue("@OphaalDatum", ophaal);
+                cmd.Parameters.AddWithValue("@InleverDatum", inlever);
                 con.Open();
                 cmd.ExecuteNonQuery();
-                cmd2.ExecuteNonQuery();
                 
             }
         }
@@ -88,7 +85,7 @@ namespace Dal
                 
                 if (sdr.Read())
                 {
-                    motor = new Motor {MotorId = (int)sdr["MotorId"], VerhuurderId = 1, Model = (string)sdr["Model"], Bouwjaar = (int)sdr["Bouwjaar"], Prijs = (int)sdr["Prijs"], Status = (string)sdr["Status"] };
+                    motor = new Motor {MotorId = (int)sdr["MotorId"], VerhuurderId = 1, Model = (string)sdr["Model"], Bouwjaar = (int)sdr["Bouwjaar"], Prijs = (int)sdr["Prijs"], Huurbaar = (bool)sdr["Huurbaar"] };
                 }
                 else
                 {
