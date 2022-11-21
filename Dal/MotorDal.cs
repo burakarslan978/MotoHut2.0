@@ -11,7 +11,7 @@ namespace Dal
     {
         private readonly string connectionstring = "Server=mssqlstud.fhict.local;Database=dbi391688;User Id=dbi391688;Password=Ikd2N)E105;";
 
-        public List<Motor> MotorControl()
+        public List<Motor> GetMotorList()
         {
             List<Motor> controlList = new List<Motor>();
             using (var con = new SqlConnection(connectionstring))

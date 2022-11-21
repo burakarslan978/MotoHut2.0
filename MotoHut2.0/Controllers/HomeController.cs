@@ -29,7 +29,7 @@ namespace MotoHut2._0.Controllers
         public IActionResult Index()
         {
             List<MotorViewModel> list = new List<MotorViewModel>();
-            foreach(var item in _imotorCollection.ConvertDataToView())
+            foreach(var item in _imotorCollection.GetMotorList())
             {
                 list.Add(new MotorViewModel { MotorId = item.MotorId, VerhuurderId = item.VerhuurderId, Bouwjaar = item.Bouwjaar, Prijs = item.Prijs, Model = item.Model, Huurbaar = item.Huurbaar });
             }
@@ -53,7 +53,7 @@ namespace MotoHut2._0.Controllers
 
 
             List<MotorViewModel> list1 = new List<MotorViewModel>();
-            foreach (var item in _imotorCollection.ConvertDataToView())
+            foreach (var item in _imotorCollection.GetMotorList())
             {
                 list1.Add(new MotorViewModel { MotorId = item.MotorId, VerhuurderId = item.VerhuurderId, Bouwjaar = item.Bouwjaar, Prijs = item.Prijs, Model = item.Model, Huurbaar = item.Huurbaar });
                 items.Add(new SelectListItem { Text = ""+item.MotorId+": "+item.Bouwjaar+" "+item.Model+"", Value = item.MotorId.ToString() });
@@ -126,7 +126,7 @@ namespace MotoHut2._0.Controllers
         public ActionResult HuurLijstSelected(int MotorId)
         {
             List<SelectListItem> items = new List<SelectListItem>();
-            foreach (var item in _imotorCollection.ConvertDataToView())
+            foreach (var item in _imotorCollection.GetMotorList())
             { 
                 items.Add(new SelectListItem { Text = "" + item.MotorId + ": " + item.Bouwjaar + " " + item.Model + "", Value = item.MotorId.ToString() });
             }
@@ -142,9 +142,24 @@ namespace MotoHut2._0.Controllers
             
         }
 
-        public ActionResult AcceptRent(int HuurderMotorId)
+        public ActionResult AcceptRent(int HuurderMotorId, int MotorId)
         {
             _ihuurderMotor.AcceptOrDeclineRent(HuurderMotorId, "Accept");
+            
+            List<HuurderMotor> list = _ihuurderMotorCollection.GetHuurderMotorListForMotor(MotorId);
+            foreach(var item in list)
+            {
+                if(item.HuurderMotorId != HuurderMotorId)
+                {
+                    if(item.IsGeaccepteerd == false && item.IsGeweigerd == false)
+                    {
+                        if (_ihuurderMotor.CheckAvailability(MotorId, item.OphaalDatum, item.InleverDatum) == false)
+                        {
+                            _ihuurderMotor.AcceptOrDeclineRent(item.HuurderMotorId, "Decline");
+                        }
+                    }
+                }
+            }
             return RedirectToAction("HuurLijstSelected");
         }
 

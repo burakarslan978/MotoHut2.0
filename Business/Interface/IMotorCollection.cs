@@ -6,7 +6,7 @@ namespace MotoHut2._0.Collections
 {
     public interface IMotorCollection
     {
-        public List<Motor> ConvertDataToView();
+        public List<Motor> GetMotorList();
 
 
     }

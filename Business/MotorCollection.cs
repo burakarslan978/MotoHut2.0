@@ -11,7 +11,7 @@ namespace MotoHut2._0
             _motorDal = i;
         }
 
-        public List<Motor> ConvertDataToView()
+        public List<Motor> GetMotorList()
         {
             //List<Motor> list = new List<Motor>();
             //foreach(var item in _motorDal.MotorControl())
@@ -26,7 +26,7 @@ namespace MotoHut2._0
 
             //    list.Add(item);
             //}
-            return _motorDal.MotorControl();
+            return _motorDal.GetMotorList();
         }
     }
 }

@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Business.HuurderMotor" BaseTypeListCollapsed="true">
+    <Position X="3.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAEBABCAAAAEAAAAIAAAAgCAAAAAAAAAAEAAA=</HashCode>
+      <FileName>HuurderMotor.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Business.HuurderMotorCollection" BaseTypeListCollapsed="true">
+    <Position X="7.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>HuurderMotorCollection.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Business.Motor" BaseTypeListCollapsed="true">
+    <Position X="1" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAgAAAAAAgIAAABAgEAAAACgE=</HashCode>
+      <FileName>Motor.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.917" Collapsed="true" />
+  </Class>
+  <Class Name="MotoHut2._0.MotorCollection" BaseTypeListCollapsed="true">
+    <Position X="5.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>MotorCollection.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Interface Name="Business.Interface.IHuurderMotor">
+    <Position X="5.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interface\IHuurderMotor.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Business.Interface.IHuurderMotorCollection">
+    <Position X="8.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Interface\IHuurderMotorCollection.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Business.IHuurderMotorDal">
+    <Position X="10.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAABAAAAAAAAAAIAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Interface\IHuurderMotorDal.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Business.IMotor">
+    <Position X="6.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAEAAAACgA=</HashCode>
+      <FileName>Interface\IMotor.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Business.IMotorDal">
+    <Position X="10.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAGAAAACgA=</HashCode>
+      <FileName>Interface\IMotorDal.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MotoHut2._0.Collections.IMotorCollection">
+    <Position X="8.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>Interface\IMotorCollection.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
