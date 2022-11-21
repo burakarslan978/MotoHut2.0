@@ -142,7 +142,7 @@ namespace MotoHut2._0.Controllers
             
         }
 
-        public ActionResult AcceptRent(int HuurderMotorId, int MotorId)
+        public ActionResult AcceptRent(int HuurderMotorId, int MotorId, DateTime OphaalDatum, DateTime InleverDatum)
         {
             _ihuurderMotor.AcceptOrDeclineRent(HuurderMotorId, "Accept");
             
@@ -153,7 +153,7 @@ namespace MotoHut2._0.Controllers
                 {
                     if(item.IsGeaccepteerd == false && item.IsGeweigerd == false)
                     {
-                        if (_ihuurderMotor.CheckAvailability(MotorId, item.OphaalDatum, item.InleverDatum) == false)
+                        if (item.OphaalDatum <= InleverDatum && item.InleverDatum >= OphaalDatum)
                         {
                             _ihuurderMotor.AcceptOrDeclineRent(item.HuurderMotorId, "Decline");
                         }
