@@ -68,15 +68,28 @@ namespace MotoHut2._0.Controllers
             ViewModel viewModel = new ViewModel { HuurderMotorModels = list2, MotorModels = list1, Motors = items };
             return View(viewModel);
         }
-        public ActionResult AddMotorForm(string txtMerk, int txtBouwjaar, int txtPrijs)
+        public ActionResult AddMotorForm(string txtMerk, int txtBouwjaar, int txtPrijs, string huurbaar)
         {
-            _imotor.AddMotor(txtMerk, txtBouwjaar, txtPrijs);
+            
+            if(huurbaar == "Nee")
+            {
+                _imotor.AddMotor(txtMerk, txtBouwjaar, txtPrijs, false);
+            }
+            else if(huurbaar == "Ja")
+            {
+                _imotor.AddMotor(txtMerk, txtBouwjaar, txtPrijs, true);
+            }
+                
+
+            
 
             return RedirectToAction("Index");
         }
         [HttpPost]
         public ActionResult RentMotor(int id, DateTime pickUpDate, DateTime returnDate)
         {
+            
+            
             Motor model = new Motor();
             if (_ihuurderMotor.CheckAvailability(id, pickUpDate, returnDate) == true)
             {
@@ -86,6 +99,14 @@ namespace MotoHut2._0.Controllers
             else
             {
                 model.MotorId = 0;
+            }
+
+            if (returnDate <= pickUpDate)
+            {
+                model.MotorId = -1;
+            } else if (pickUpDate < DateTime.Now.AddHours(2))
+            {
+                model.MotorId = -2;
             }
 
 

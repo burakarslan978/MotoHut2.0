@@ -6,7 +6,7 @@
     ViewData["Title"] = "Motor Rented";
 }
 <h1>@ViewData["Title"]</h1>
-@if(Model.MotorViewModel.MotorId != 0)
+@if(Model.MotorViewModel.MotorId > 0)
 {
     <p>Aanvraag om motor te huren is verstuurd</p>
 <h3>Details</h3>
@@ -20,10 +20,16 @@
                 <p><b>Inleverdatum:</b>  @Model.HuurderMotorViewModel.InleverDatum</p>
     </div>
 }
-else
+else if (Model.MotorViewModel.MotorId == 0)
 {
     ViewData["Title"] = "Motor Not Rented";
     <h2>Motor is niet beschikbaar op gekozen datums</h2>
+} else if (Model.MotorViewModel.MotorId == -1)
+{
+    <h2>Inleverdatum moet na de ophaaldatum zijn!</h2>
+} else if (Model.MotorViewModel.MotorId == -2)
+{
+    <h2>Ophaaldatum moet minimaal 2 uur in de toekomst zijn!</h2>
 }
 
 

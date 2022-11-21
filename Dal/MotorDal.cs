@@ -10,32 +10,6 @@ namespace Dal
     public class MotorDal : IMotorDal
     {
         private readonly string connectionstring = "Server=mssqlstud.fhict.local;Database=dbi391688;User Id=dbi391688;Password=Ikd2N)E105;";
-        public static string ConnectServer()
-        {
-            string connectionstring = "Server=mssqlstud.fhict.local;Database=dbi391688;User Id=dbi391688;Password=Ikd2N)E105;";
-
-            SqlConnection conn = new SqlConnection(connectionstring);
-            conn.Open();
-            string sql = "SELECT * from Motor";
-            SqlDataAdapter ad = new SqlDataAdapter(sql, conn);
-            DataTable dt = new DataTable();
-            ad.Fill(dt);
-
-            string motor = "";
-
-            foreach (DataRow dr in dt.Rows)
-            {
-                motor += dr["MotorId"].ToString();
-                motor += dr["Model"].ToString();
-                motor += dr["Bouwjaar"].ToString();
-                motor += dr["Prijs"].ToString();
-
-            }
-
-            conn.Close();
-
-            return motor;
-        }
 
         public List<Motor> MotorControl()
         {
@@ -95,11 +69,12 @@ namespace Dal
             return motor;
         }
 
-        public void AddMotor(string merk, int bouwjaar, int prijs)
+        public void AddMotor(string merk, int bouwjaar, int prijs, bool huurbaar)
         {
             using(var con = new SqlConnection(connectionstring))
             {
-                var cmd = new SqlCommand("INSERT INTO Motor (Model, Bouwjaar, Prijs, Status) VALUES(@Model,@Bouwjaar,@Prijs,'Vrij')", con);
+                var cmd = new SqlCommand("INSERT INTO Motor (Model, Bouwjaar, Prijs, Huurbaar) VALUES(@Model,@Bouwjaar,@Prijs,@huurbaar)", con);
+                cmd.Parameters.AddWithValue("@huurbaar", huurbaar);
                 cmd.Parameters.AddWithValue("@Model", merk);
                 cmd.Parameters.AddWithValue("@Bouwjaar", bouwjaar);
                 cmd.Parameters.AddWithValue("@Prijs", prijs);
