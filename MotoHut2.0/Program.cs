@@ -10,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddSingleton<IMotorCollection, MotorCollection>();
 builder.Services.AddSingleton<IMotorDal, MotorDal>();
+builder.Services.AddSingleton<IMotorCollectionDal, MotorCollectionDal>();
 builder.Services.AddSingleton<IMotor, Motor>();
 builder.Services.AddSingleton<IHuurderMotorCollection, HuurderMotorCollection>();
 builder.Services.AddSingleton<IHuurderMotor, HuurderMotor>();

@@ -11,27 +11,6 @@ namespace Dal
     {
         private readonly string connectionstring = "Server=mssqlstud.fhict.local;Database=dbi391688;User Id=dbi391688;Password=Ikd2N)E105;";
 
-        public List<Motor> GetMotorList()
-        {
-            List<Motor> controlList = new List<Motor>();
-            using (var con = new SqlConnection(connectionstring))
-            {
-                using (var cmd = new SqlCommand("SELECT * FROM Motor", con))
-                {
-                    con.Open();
-                    SqlDataReader rdr = cmd.ExecuteReader();
-                    while (rdr.Read())
-                    {
-                        //ControlFactory factory = new ControlFactory();
-                        //IMotorCollection motor = factory.CreateControl(i);
-                        Motor motor = new Motor { MotorId = (int)rdr["MotorId"], VerhuurderId = 1, Model = (string)rdr["Model"], Bouwjaar = (int)rdr["Bouwjaar"], Prijs = (int)rdr["Prijs"], Huurbaar = (bool)rdr["Huurbaar"] };
-
-                        controlList.Add(motor);
-                    }
-                }
-                return controlList;
-            }
-        }
 
         public void RentMotorDal(int motorId, DateTime ophaal, DateTime inlever)
         {
@@ -69,48 +48,6 @@ namespace Dal
             return motor;
         }
 
-        public void AddMotor(string merk, int bouwjaar, int prijs, bool huurbaar)
-        {
-            using(var con = new SqlConnection(connectionstring))
-            {
-                var cmd = new SqlCommand("INSERT INTO Motor (Model, Bouwjaar, Prijs, Huurbaar) VALUES(@Model,@Bouwjaar,@Prijs,@huurbaar)", con);
-                cmd.Parameters.AddWithValue("@huurbaar", huurbaar);
-                cmd.Parameters.AddWithValue("@Model", merk);
-                cmd.Parameters.AddWithValue("@Bouwjaar", bouwjaar);
-                cmd.Parameters.AddWithValue("@Prijs", prijs);
-                con.Open();
-                cmd.ExecuteNonQuery();
-            }
-        }
-
-        public void DeleteMotor(int motorId)
-        {
-            using (var con = new SqlConnection(connectionstring))
-            {
-                var cmd = new SqlCommand("DELETE FROM Motor WHERE MotorId=@MotorId", con);
-                cmd.Parameters.AddWithValue("@MotorId", motorId);
-                con.Open();
-                cmd.ExecuteNonQuery();
-            }
-        }
-
-        //public object query(string query)
-        //{
-
-        //}
-
-        //public class ControlFactory
-        //{
-        //    public IMotorCollection CreateControl(IMotorCollection control)
-        //    {
-        //        //if (control is Motor)
-        //        //    return new Motor();
-        //        //else if (control is )
-        //        //    return new ();
-        //        //else
-        //            return new MotorCollection();
-        //    }
-        //}
 
     }
 }

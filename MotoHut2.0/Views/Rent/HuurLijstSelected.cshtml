@@ -11,7 +11,7 @@
 }
 @model ViewModel;
 
-@using (Html.BeginForm("HuurLijstSelected", "Home", FormMethod.Post))
+@using (Html.BeginForm("HuurLijstSelected", "Rent", FormMethod.Post))
 {
     <h4>Selecteer motor: </h4>
 
@@ -46,7 +46,7 @@
     </tr>
     @if(item.IsGeaccepteerd == false && item.IsGeweigerd == false)
         {
-        <form action="@Url.Action("AcceptRent","Home")" method="post">
+        <form action="@Url.Action("AcceptRent","Rent")" method="post">
         <tr>
             <td><input type="number" name="MotorId" id="MotorId" value="@item.MotorId" style="display:none" readonly /></td>
             <td><input type="number" name="HuurderMotorId" id="HuurderMotorId" value="@item.HuurderMotorId" style="display:none" readonly/></td>
@@ -55,7 +55,7 @@
             <td colspan="2"><input type="submit" value="Accepteer" class="btn btn-info my-2" /></td>
         </tr>
         </form>
-        <form action="@Url.Action("DeclineRent","Home")" method="post">
+        <form action="@Url.Action("DeclineRent","Rent")" method="post">
         <tr style="border-bottom: 1px solid;">
             <td><input type="number" name="HuurderMotorId" id="HuurderMotorId" value="@item.HuurderMotorId" style="display:none" readonly/></td>
             <td colspan="2"><input type="submit" value="Weiger" class="btn btn-danger my-2" /></td>

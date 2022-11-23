@@ -5,28 +5,24 @@ namespace MotoHut2._0
 {
     public class MotorCollection : IMotorCollection
     {
-        private readonly IMotorDal _motorDal;
-        public MotorCollection(IMotorDal i)
+        private readonly IMotorCollectionDal _motorCollectionDal;
+        public MotorCollection(IMotorCollectionDal i)
         {
-            _motorDal = i;
+            _motorCollectionDal = i;
         }
 
         public List<Motor> GetMotorList()
         {
-            //List<Motor> list = new List<Motor>();
-            //foreach(var item in _motorDal.MotorControl())
-            //{
-            //    Motor motor = new Motor();
-            //    motor.MotorId = item.MotorId;
-            //    motor.VerhuurderId = item.VerhuurderId;
-            //    motor.Bouwjaar = item.Bouwjaar;
-            //    motor.Prijs = item.Prijs;
-            //    motor.Model = item.Model;
-            //    motor.Status = item.Status;
+            return _motorCollectionDal.GetMotorList();
+        }
 
-            //    list.Add(item);
-            //}
-            return _motorDal.GetMotorList();
+        public void AddMotor(string merk, int bouwjaar, int prijs, bool huurbaar)
+        {
+            _motorCollectionDal.AddMotor(merk, bouwjaar, prijs, huurbaar);
+        }
+        public void DeleteMotor(int motorId)
+        {
+            _motorCollectionDal.DeleteMotor(motorId);
         }
     }
 }
