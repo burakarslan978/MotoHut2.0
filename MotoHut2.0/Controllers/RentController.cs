@@ -52,7 +52,7 @@ namespace MotoHut2._0.Controllers
 
 
             Motor model = new Motor();
-            if (_ihuurderMotor.CheckAvailability(id, pickUpDate, returnDate) == true)
+            if (_ihuurderMotor.CheckAvailability(id, pickUpDate, returnDate) == true && pickUpDate <= returnDate && pickUpDate > DateTime.Now.AddHours(2))
             {
                 _imotor.RentMotor(id, pickUpDate, returnDate);
                 model = _imotor.GetMotor(id);

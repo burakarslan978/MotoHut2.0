@@ -11,23 +11,24 @@
   <Class Name="Business.HuurderMotorCollection" BaseTypeListCollapsed="true">
     <Position X="7.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAEAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <HashCode>AAEAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
       <FileName>HuurderMotorCollection.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="Business.Motor" BaseTypeListCollapsed="true">
+  <Class Name="Business.User" BaseTypeListCollapsed="true">
     <Position X="1" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAgAAAAAAAAAAAAAAAAgAAAAAAgIAAABAgEAAAACgE=</HashCode>
-      <FileName>Motor.cs</FileName>
+      <HashCode>AAAAAAQAACAACAACAAAABAgAAhAAAggCAAAAAAAAAAA=</HashCode>
+      <FileName>User.cs</FileName>
+      <NewMemberFileName>Motor.cs</NewMemberFileName>
     </TypeIdentifier>
     <Lollipop Position="0.917" Collapsed="true" />
   </Class>
   <Class Name="MotoHut2._0.MotorCollection" BaseTypeListCollapsed="true">
     <Position X="5.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAGAAAACAA=</HashCode>
       <FileName>MotorCollection.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
@@ -49,28 +50,28 @@
   <Interface Name="Business.IHuurderMotorDal">
     <Position X="10.25" Y="4.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAEAAAAAAAABAAAAAAAAAAIAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <HashCode>AAAAAAAAAAABAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Interface\IHuurderMotorDal.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Business.IMotor">
+  <Interface Name="Business.IUserDal">
     <Position X="6.75" Y="3" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAEAAAACgA=</HashCode>
-      <FileName>Interface\IMotor.cs</FileName>
+      <HashCode>AAAAAAQAAAAAAAACAAAAAAAAAgAAAggAAAAAAAAAAAA=</HashCode>
+      <FileName>Interface\IUserDal.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Business.IMotorDal">
     <Position X="10.5" Y="1.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAGAAAACgA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
       <FileName>Interface\IMotorDal.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="MotoHut2._0.Collections.IMotorCollection">
     <Position X="8.5" Y="4.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGAAAACAA=</HashCode>
       <FileName>Interface\IMotorCollection.cs</FileName>
     </TypeIdentifier>
   </Interface>

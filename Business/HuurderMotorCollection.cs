@@ -9,20 +9,20 @@ namespace Business
 {
     public class HuurderMotorCollection : IHuurderMotorCollection
     {
-        private readonly IHuurderMotorDal _huurderMotorDal;
-        public HuurderMotorCollection(IHuurderMotorDal i)
+        private readonly IHuurderMotorCollectionDal _huurderMotorCollectionDal;
+        public HuurderMotorCollection(IHuurderMotorCollectionDal i)
         {
-            _huurderMotorDal = i;
+            _huurderMotorCollectionDal = i;
         }
 
         public List<HuurderMotor> GetHuurderMotorList()
         {
-            return _huurderMotorDal.GetHuurderMotorList();
+            return _huurderMotorCollectionDal.GetHuurderMotorList();
         }
 
         public List<HuurderMotor> GetHuurderMotorListForMotor(int motorId)
         {
-            return _huurderMotorDal.GetHuurderMotorListForMotor(motorId);
+            return _huurderMotorCollectionDal.GetHuurderMotorListForMotor(motorId);
         }
     }
 }

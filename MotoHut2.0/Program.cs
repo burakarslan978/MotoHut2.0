@@ -13,6 +13,7 @@ builder.Services.AddSingleton<IMotorDal, MotorDal>();
 builder.Services.AddSingleton<IMotorCollectionDal, MotorCollectionDal>();
 builder.Services.AddSingleton<IMotor, Motor>();
 builder.Services.AddSingleton<IHuurderMotorCollection, HuurderMotorCollection>();
+builder.Services.AddSingleton<IHuurderMotorCollectionDal, HuurderMotorCollectionDal>();
 builder.Services.AddSingleton<IHuurderMotor, HuurderMotor>();
 builder.Services.AddSingleton<IHuurderMotorDal, HuurderMotorDal>();
 

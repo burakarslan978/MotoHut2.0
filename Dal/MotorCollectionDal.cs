@@ -27,8 +27,6 @@ namespace Dal
                     SqlDataReader rdr = cmd.ExecuteReader();
                     while (rdr.Read())
                     {
-                        //ControlFactory factory = new ControlFactory();
-                        //IMotorCollection motor = factory.CreateControl(i);
                         Motor motor = new Motor { MotorId = (int)rdr["MotorId"], VerhuurderId = 1, Model = (string)rdr["Model"], Bouwjaar = (int)rdr["Bouwjaar"], Prijs = (int)rdr["Prijs"], Huurbaar = (bool)rdr["Huurbaar"] };
 
                         controlList.Add(motor);
