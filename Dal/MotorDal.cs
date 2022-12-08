@@ -4,6 +4,7 @@ using MotoHut2._0.Collections;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Runtime.CompilerServices;
 
 namespace Dal
 {
@@ -31,7 +32,7 @@ namespace Dal
             Motor motor;
             using (var con = new SqlConnection(connectionstring))
             {
-                var cmd = new SqlCommand("SELECT * FROM Motor WHERE MotorId=@MotorId", con);
+                var cmd = new SqlCommand("SELECT MotorId,Model,Bouwjaar,Prijs,Huurbaar FROM Motor WHERE MotorId=@MotorId", con);
                 cmd.Parameters.AddWithValue("@MotorId", motorId);
                 con.Open();
                 SqlDataReader sdr = cmd.ExecuteReader();

@@ -21,7 +21,7 @@ namespace Dal
             List<Motor> controlList = new List<Motor>();
             using (var con = new SqlConnection(connectionstring))
             {
-                using (var cmd = new SqlCommand("SELECT * FROM Motor", con))
+                using (var cmd = new SqlCommand("SELECT MotorId,Model,Bouwjaar,Prijs,Huurbaar FROM Motor", con))
                 {
                     con.Open();
                     SqlDataReader rdr = cmd.ExecuteReader();

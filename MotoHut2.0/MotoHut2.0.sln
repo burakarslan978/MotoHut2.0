@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32407.343
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotoHut2.0", "MotoHut2.0.csproj", "{4D602FD1-EFA3-47D3-B9EA-191AA09B4CC3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MotoHut2.0", "MotoHut2.0.csproj", "{4D602FD1-EFA3-47D3-B9EA-191AA09B4CC3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dal", "..\Dal\Dal.csproj", "{E8CA2665-7247-48AC-9FEB-5FE083E209CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dal", "..\Dal\Dal.csproj", "{E8CA2665-7247-48AC-9FEB-5FE083E209CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Business", "..\Business\Business.csproj", "{7BA79057-2BA3-4831-A07E-B8F966279104}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Business", "..\Business\Business.csproj", "{7BA79057-2BA3-4831-A07E-B8F966279104}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

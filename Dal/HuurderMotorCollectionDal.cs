@@ -17,7 +17,7 @@ namespace Dal
             List<HuurderMotor> controlList = new List<HuurderMotor>();
             using (var con = new SqlConnection(connectionstring))
             {
-                using (var cmd = new SqlCommand("SELECT * FROM HuurderMotor", con))
+                using (var cmd = new SqlCommand("SELECT HuurderMotorId,MotorId,OphaalDatum,InleverDatum,IsGeaccepteerd,IsGeweigerd FROM HuurderMotor", con))
                 {
                     con.Open();
                     SqlDataReader rdr = cmd.ExecuteReader();
@@ -37,7 +37,7 @@ namespace Dal
             List<HuurderMotor> controlList = new List<HuurderMotor>();
             using (var con = new SqlConnection(connectionstring))
             {
-                using (var cmd = new SqlCommand("SELECT * FROM HuurderMotor WHERE MotorId=@MotorID", con))
+                using (var cmd = new SqlCommand("SELECT HuurderMotorId,MotorId,OphaalDatum,InleverDatum,IsGeaccepteerd,IsGeweigerd FROM HuurderMotor WHERE MotorId=@MotorID", con))
                 {
                     cmd.Parameters.AddWithValue("@MotorId", motorId);
                     con.Open();

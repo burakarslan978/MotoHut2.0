@@ -4,10 +4,11 @@
 @model ViewModel;
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">@ViewBag.UserName</h1> 
+
     <h2>Te huur</h2>
     <div style="display:flex;justify-content:space-evenly;margin-bottom:100px;flex-wrap:wrap;">
+        
     @foreach (var item in Model.MotorModels)
     {
             if(item.Huurbaar == true)

@@ -1,0 +1,22 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Login";
+}
+<form action="@Url.Action("LoginForm","Login")" method="post">
+    <table>
+        <tr>
+            <td>E-mail </td>
+            <td><input type="text" name="txtEmail" required /></td>
+        </tr>
+        <tr>
+            <td>Wachtwoord: </td>
+            <td><input type="text" name="txtPassword" required/></td>
+        </tr>
+        <tr>
+            <td colspan="2"><input type="submit" value="Login" /></td>
+        </tr>   
+    </table>
+    @ViewBag.ErrorMsg
+</form>

@@ -45,7 +45,15 @@ namespace Business
         {
             return _userDal.GetVerhuurderId(UserId);
         }
+        public int GetUserIdWithLogin(string mail, string password)
+        {
+            return _userDal.GetUserIdWithLogin(mail, password);
+        }
 
+        public string GetNameWithId(int UserId)
+        {
+            return _userDal.GetNameWithId(UserId);
+        }
 
     }
 }

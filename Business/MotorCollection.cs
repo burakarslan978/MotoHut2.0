@@ -6,11 +6,11 @@ namespace MotoHut2._0
     public class MotorCollection : IMotorCollection
     {
         private readonly IMotorCollectionDal _motorCollectionDal;
+
         public MotorCollection(IMotorCollectionDal i)
         {
             _motorCollectionDal = i;
         }
-
         public List<Motor> GetMotorList()
         {
             return _motorCollectionDal.GetMotorList();

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Dal
 {
-    public class UserDal
+    public class UserDal : IUserDal
     {
         private readonly string connectionstring = "Server=mssqlstud.fhict.local;Database=dbi391688;User Id=dbi391688;Password=Ikd2N)E105;";
 
@@ -17,7 +17,7 @@ namespace Dal
             
             using (var con = new SqlConnection(connectionstring))
             {
-                var cmd = new SqlCommand("SELECT * FROM User WHERE Email=@email AND Password=@password", con);
+                var cmd = new SqlCommand("SELECT * FROM [User] WHERE Email=@email AND Password=@password", con);
                 cmd.Parameters.AddWithValue("@email", mail);
                 cmd.Parameters.AddWithValue("@password", password);
                 con.Open();
@@ -39,7 +39,7 @@ namespace Dal
             User user;
             using (var con = new SqlConnection(connectionstring))
             {
-                var cmd = new SqlCommand("SELECT * FROM User WHERE Email=@email AND Password=@password", con);
+                var cmd = new SqlCommand("SELECT * FROM [User] WHERE Email=@email AND Password=@password", con);
                 cmd.Parameters.AddWithValue("@email", mail);
                 cmd.Parameters.AddWithValue("@password", password);
                 con.Open();
@@ -56,12 +56,33 @@ namespace Dal
             }
         }
 
+        public int GetUserIdWithLogin(string mail, string password)
+        {
+            using (var con = new SqlConnection(connectionstring))
+            {
+                var cmd = new SqlCommand("SELECT UserId FROM [User] WHERE Email=@email AND Password=@password", con);
+                cmd.Parameters.AddWithValue("@email", mail);
+                cmd.Parameters.AddWithValue("@password", password);
+                con.Open();
+                SqlDataReader sdr = cmd.ExecuteReader();
+
+                if (sdr.Read())
+                {
+                    return (int)sdr["UserId"];
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+        }
+
         public User GetUserWithId(int UserId)
         {
             User user;
             using (var con = new SqlConnection(connectionstring))
             {
-                var cmd = new SqlCommand("SELECT * FROM User WHERE UserId=@userId", con);
+                var cmd = new SqlCommand("SELECT * FROM [User] WHERE UserId=@userId", con);
                 cmd.Parameters.AddWithValue("@userId", UserId);
                 con.Open();
                 SqlDataReader sdr = cmd.ExecuteReader();
@@ -75,6 +96,29 @@ namespace Dal
                     return user = null;
                 }
             }
+            
+        }
+
+        public string GetNameWithId(int UserId)
+        {
+            User user;
+            using (var con = new SqlConnection(connectionstring))
+            {
+                var cmd = new SqlCommand("SELECT Naam FROM [User] WHERE UserId=@userId", con);
+                cmd.Parameters.AddWithValue("@userId", UserId);
+                con.Open();
+                SqlDataReader sdr = cmd.ExecuteReader();
+
+                if (sdr.Read())
+                {
+                    return (string)sdr["Naam"];
+                }
+                else
+                {
+                    return "-";
+                }
+            }
+
         }
 
         public int GetHuurderId(int UserId)
@@ -97,7 +141,7 @@ namespace Dal
             }
         }
 
-        public int GetVerHuurderId(int UserId)
+        public int GetVerhuurderId(int UserId)
         {
             using (var con = new SqlConnection(connectionstring))
             {

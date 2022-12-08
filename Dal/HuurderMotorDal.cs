@@ -17,7 +17,7 @@ namespace Dal
             List<HuurderMotor> controlList = new List<HuurderMotor>();
             using (var con = new SqlConnection(connectionstring))
             {
-                using (var cmd = new SqlCommand("SELECT * FROM HuurderMotor WHERE MotorId=@MotorID AND IsGeaccepteerd=1", con))
+                using (var cmd = new SqlCommand("SELECT HuurderMotorId,MotorId,OphaalDatum,InleverDatum,IsGeaccepteerd,IsGeweigerd FROM HuurderMotor WHERE MotorId=@MotorID AND IsGeaccepteerd=1", con))
                 {
                     cmd.Parameters.AddWithValue("@MotorId", motorId);
                     con.Open();

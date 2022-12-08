@@ -12,14 +12,25 @@ builder.Services.AddSingleton<IMotorCollection, MotorCollection>();
 builder.Services.AddSingleton<IMotorDal, MotorDal>();
 builder.Services.AddSingleton<IMotorCollectionDal, MotorCollectionDal>();
 builder.Services.AddSingleton<IMotor, Motor>();
+builder.Services.AddSingleton<IUser, User>();
+builder.Services.AddSingleton<IUserDal, UserDal>();
 builder.Services.AddSingleton<IHuurderMotorCollection, HuurderMotorCollection>();
 builder.Services.AddSingleton<IHuurderMotorCollectionDal, HuurderMotorCollectionDal>();
 builder.Services.AddSingleton<IHuurderMotor, HuurderMotor>();
 builder.Services.AddSingleton<IHuurderMotorDal, HuurderMotorDal>();
 
+builder.Services.AddDistributedMemoryCache();
 
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromSeconds(10);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 var app = builder.Build();
+
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -35,6 +46,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",
