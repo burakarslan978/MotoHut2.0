@@ -10,5 +10,6 @@ namespace MotoHut2._0.Models
         public IEnumerable<SelectListItem> Motors { get; set; }
         public MotorViewModel MotorViewModel { get; set; }
         public HuurderMotorViewModel HuurderMotorViewModel { get; set; }
+        public UserModel UserModel { get; set; }
     }
 }

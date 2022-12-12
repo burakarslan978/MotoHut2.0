@@ -2,6 +2,7 @@
 using Business;
 using Microsoft.AspNetCore.Mvc;
 using MotoHut2._0.Collections;
+using System.Security.Claims;
 
 namespace MotoHut2._0.Controllers
 {
@@ -25,16 +26,21 @@ namespace MotoHut2._0.Controllers
         public ActionResult AddMotorForm(string txtMerk, int txtBouwjaar, int txtPrijs, string huurbaar)
         {
 
+            var verhuurderId = User.Claims.Where(c => c.Type == "verhuurderid")
+                               .Select(c => c.Value).SingleOrDefault();
+
             if (huurbaar == "Nee")
             {
-                _imotorCollection.AddMotor(txtMerk, txtBouwjaar, txtPrijs, false);
+                _imotorCollection.AddMotor(txtMerk, txtBouwjaar, txtPrijs, false, Convert.ToInt32(verhuurderId));
             }
             else if (huurbaar == "Ja")
             {
-                _imotorCollection.AddMotor(txtMerk, txtBouwjaar, txtPrijs, true);
+                _imotorCollection.AddMotor(txtMerk, txtBouwjaar, txtPrijs, true, Convert.ToInt32(verhuurderId));
             }
 
             return RedirectToAction("Index", "Home");
         }
+
+
     }
 }

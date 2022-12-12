@@ -36,15 +36,16 @@ namespace Dal
             }
         }
 
-        public void AddMotor(string merk, int bouwjaar, int prijs, bool huurbaar)
+        public void AddMotor(string merk, int bouwjaar, int prijs, bool huurbaar, int verhuurderId)
         {
             using (var con = new SqlConnection(connectionstring))
             {
-                var cmd = new SqlCommand("INSERT INTO Motor (Model, Bouwjaar, Prijs, Huurbaar) VALUES(@Model,@Bouwjaar,@Prijs,@huurbaar)", con);
+                var cmd = new SqlCommand("INSERT INTO Motor (VerhuurderId, Model, Bouwjaar, Prijs, Huurbaar) VALUES(@VerhuurderId,@Model,@Bouwjaar,@Prijs,@huurbaar)", con);
                 cmd.Parameters.AddWithValue("@huurbaar", huurbaar);
                 cmd.Parameters.AddWithValue("@Model", merk);
                 cmd.Parameters.AddWithValue("@Bouwjaar", bouwjaar);
                 cmd.Parameters.AddWithValue("@Prijs", prijs);
+                cmd.Parameters.AddWithValue("@VerhuurderId", verhuurderId);
                 con.Open();
                 cmd.ExecuteNonQuery();
             }

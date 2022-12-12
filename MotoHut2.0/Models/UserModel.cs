@@ -7,5 +7,6 @@
         public string Email { get; set; }
         public string Password { get; set; }
         public int Leeftijd { get; set; }
+        public bool IsAuthenticated { get; set; }
     }
 }

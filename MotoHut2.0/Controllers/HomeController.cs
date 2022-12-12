@@ -13,24 +13,18 @@ namespace MotoHut2._0.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IMotorCollection _imotorCollection;
-        private readonly IUser _iuser;
 
 
 
-        public HomeController(ILogger<HomeController> logger, IMotorCollection iMotorCollection, IUser iUser)
+        public HomeController(ILogger<HomeController> logger, IMotorCollection iMotorCollection)
         {
             _logger = logger;
             _imotorCollection = iMotorCollection;
-            _iuser = iUser;
         }
 
         public IActionResult Index()
         {
-
-            if (HttpContext.Session.GetInt32("_UserId") > 0)
-            {
-                ViewBag.UserName = "Welkom " + _iuser.GetNameWithId((int)HttpContext.Session.GetInt32("_UserId")) +"!";
-            }
+            
             
             List<MotorViewModel> list = new List<MotorViewModel>();
             foreach(var item in _imotorCollection.GetMotorList())

@@ -47,12 +47,14 @@ namespace MotoHut2._0.Controllers
         }
 
 
+
         public ActionResult RentMotor(int id, DateTime pickUpDate, DateTime returnDate)
         {
 
 
             Motor model = new Motor();
-            if (_ihuurderMotor.CheckAvailability(id, pickUpDate, returnDate) == true && pickUpDate <= returnDate && pickUpDate > DateTime.Now.AddHours(2))
+
+            if (_ihuurderMotor.CheckAvailability(id, pickUpDate, returnDate) && pickUpDate <= returnDate && pickUpDate > DateTime.Now.AddHours(2))
             {
                 _imotor.RentMotor(id, pickUpDate, returnDate);
                 model = _imotor.GetMotor(id);

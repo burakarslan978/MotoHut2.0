@@ -16,9 +16,9 @@ namespace MotoHut2._0
             return _motorCollectionDal.GetMotorList();
         }
 
-        public void AddMotor(string merk, int bouwjaar, int prijs, bool huurbaar)
+        public void AddMotor(string merk, int bouwjaar, int prijs, bool huurbaar, int verhuurderId)
         {
-            _motorCollectionDal.AddMotor(merk, bouwjaar, prijs, huurbaar);
+            _motorCollectionDal.AddMotor(merk, bouwjaar, prijs, huurbaar, verhuurderId);
         }
         public void DeleteMotor(int motorId)
         {

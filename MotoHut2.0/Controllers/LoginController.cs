@@ -1,8 +1,11 @@
 ﻿using Business;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MotoHut2._0.Collections;
 using System.Net;
+using System.Security.Claims;
 
 namespace MotoHut2._0.Controllers
 {
@@ -10,8 +13,6 @@ namespace MotoHut2._0.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IUser _iuser;
-        public const string SessionKeyUserId = "_UserId";
-        public const string SessionKeyUserName = "_UserName";
 
         public LoginController(ILogger<HomeController> logger, IUser iUser)
         {
@@ -25,23 +26,43 @@ namespace MotoHut2._0.Controllers
             return View();
         }
 
-        [HttpPost]
-        public ActionResult LoginForm(string txtEmail, string txtPassword)
+        public async Task<IActionResult> Logout()
         {
-            if(_iuser.CheckLogin(txtEmail, txtPassword))
+            await HttpContext.SignOutAsync();
+            return Redirect("/");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(string txtEmail, string txtPassword, string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+
+            if (_iuser.CheckLogin(txtEmail, txtPassword))
             {
-                ViewBag.ErrorMsg = "Success";
-                
-                HttpContext.Session.SetInt32(SessionKeyUserId, _iuser.GetUserIdWithLogin(txtEmail, txtPassword));
-            } else
-            {
-                ViewBag.ErrorMsg = "Fout";
-                return View("Index");
+                int userId = _iuser.GetUserIdWithLogin(txtEmail, txtPassword);
+
+                var claims = new List<Claim>
+                {
+                    new Claim("email", txtEmail),
+                    new Claim("userid", userId.ToString()),
+                    new Claim("naam", _iuser.GetNameWithId(userId)),
+                    new Claim("huurderid", _iuser.GetHuurderId(userId).ToString()),
+                    new Claim("verhuurderid", _iuser.GetVerhuurderId(userId).ToString())
+                };
+
+                await HttpContext.SignInAsync(new ClaimsPrincipal(new ClaimsIdentity(claims, "Cookies", "naam", "userid")));
+
+                if (Url.IsLocalUrl(returnUrl))
+                {
+                    return Redirect(returnUrl);
+                }
+                else
+                {
+                    return Redirect("/");
+                }
             }
-  
-
-
-            return RedirectToAction("Index", "Home");
+            ViewBag.ErrorMsg = "Verkeerde combinatie van email en wachtwoord";
+            return View("Index");
         }
     }
 }

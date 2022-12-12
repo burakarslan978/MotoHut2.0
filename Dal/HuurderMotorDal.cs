@@ -14,37 +14,17 @@ namespace Dal
 
         public bool CheckAvailability(int motorId, DateTime ophaal, DateTime inlever) //niet beschikbaar = false
         {
-            List<HuurderMotor> controlList = new List<HuurderMotor>();
-            using (var con = new SqlConnection(connectionstring))
-            {
-                using (var cmd = new SqlCommand("SELECT HuurderMotorId,MotorId,OphaalDatum,InleverDatum,IsGeaccepteerd,IsGeweigerd FROM HuurderMotor WHERE MotorId=@MotorID AND IsGeaccepteerd=1", con))
-                {
-                    cmd.Parameters.AddWithValue("@MotorId", motorId);
-                    con.Open();
-                    SqlDataReader rdr = cmd.ExecuteReader();
-                    while (rdr.Read())
-                    {
-                        HuurderMotor huurdermotor = new HuurderMotor { HuurderMotorId = (int)rdr["HuurderMotorId"], MotorId = (int)rdr["MotorId"], HuurderId = 1, OphaalDatum = (DateTime)rdr["OphaalDatum"], InleverDatum = (DateTime)rdr["InleverDatum"], IsGeaccepteerd = (bool)rdr["IsGeaccepteerd"], IsGeweigerd = (bool)rdr["IsGeweigerd"] };
+            HuurderMotorCollectionDal _huurderMotorCollectionDal = new HuurderMotorCollectionDal();
+            List<HuurderMotor> controlList = _huurderMotorCollectionDal.GetHuurderMotorListForMotor(motorId);
 
-                        controlList.Add(huurdermotor);
-                    }
-                }
-            }
             if (controlList.Count > 0)
             {
                 foreach (var item in controlList)
                 {
-                    if (ophaal <= item.InleverDatum && inlever >= item.OphaalDatum)
-                    {
-                        return false;
-                    }
-                    else
-                    {
-                        return true;
-                    }
+                    return !(ophaal <= item.InleverDatum && inlever >= item.OphaalDatum);
                 }
             }
-                return true;
+            return true;
         }
 
         public void AcceptOrDeclineRent(int huurderMotorId, string acceptOrDecline)
