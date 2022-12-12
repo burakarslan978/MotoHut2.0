@@ -4,7 +4,8 @@
 @{
     ViewData["Title"] = "Login";
 }
-<form action="@Url.Action("Login","Login")" method="post">
+<h2>Inloggen</h2>
+<form action="@Url.Action("Login","Account")" method="post">
     <table>
         <tr>
             <td>E-mail </td>
@@ -12,11 +13,11 @@
         </tr>
         <tr>
             <td>Wachtwoord: </td>
-            <td><input type="password" name="txtPassword" required password/></td>
+            <td><input type="password" name="txtPassword" required /></td>
         </tr>
         <tr>
             <td colspan="2"><input type="submit" value="Login" /></td>
         </tr>   
     </table>
-    @ViewBag.ErrorMsg
+    <h4 style="color:darkred">@ViewBag.ErrorMsg</h4>
 </form>

@@ -47,7 +47,7 @@ namespace Dal
 
                 if (sdr.Read())
                 {
-                    return user = new User { UserId = (int)sdr["UserId"], Email = (string)sdr["Email"], Leeftijd = (int)sdr["Leeftijd"], Naam = (string)sdr["Naam"] };
+                    return user = new User { UserId = (int)sdr["UserId"], Email = (string)sdr["Email"], Geboortedatum = (DateTime)sdr["Geboortedatum"], Naam = (string)sdr["Naam"] };
                 }
                 else
                 {
@@ -89,7 +89,7 @@ namespace Dal
 
                 if (sdr.Read())
                 {
-                    return user = new User { UserId = (int)sdr["UserId"], Email = (string)sdr["Email"], Leeftijd = (int)sdr["Leeftijd"], Naam = (string)sdr["Naam"] };
+                    return user = new User { UserId = (int)sdr["UserId"], Email = (string)sdr["Email"], Geboortedatum = (DateTime)sdr["Geboortedatum"], Naam = (string)sdr["Naam"] };
                 }
                 else
                 {
@@ -158,6 +158,31 @@ namespace Dal
                 {
                     return 0;
                 }
+            }
+        }
+
+        public void AddUser(string naam, string email, string password, DateTime geboortedatum)
+        {
+            using (var con = new SqlConnection(connectionstring))
+            {
+                var cmd = new SqlCommand("INSERT INTO [User] (Naam, Email, Password, Geboortedatum) VALUES(@Naam,@Email,@Password,@Geboortedatum)", con);
+                cmd.Parameters.AddWithValue("@Naam", naam);
+                cmd.Parameters.AddWithValue("@Email", email);
+                cmd.Parameters.AddWithValue("@Password", password);
+                cmd.Parameters.AddWithValue("@Geboortedatum", geboortedatum);
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+            int newUserId = GetUserIdWithLogin(email, password);
+            using (var con = new SqlConnection(connectionstring))
+            {
+                var cmd = new SqlCommand("INSERT INTO Huurder (UserId) VALUES(@UserId)", con);
+                var cmd2 = new SqlCommand("INSERT INTO Verhuurder (UserId) VALUES(@UserId)", con);
+                cmd.Parameters.AddWithValue("@UserId", newUserId);
+                cmd2.Parameters.AddWithValue("@UserId", newUserId);
+                con.Open();
+                cmd.ExecuteNonQuery();
+                cmd2.ExecuteNonQuery();
             }
         }
 

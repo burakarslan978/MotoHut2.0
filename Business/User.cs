@@ -15,7 +15,7 @@ namespace Business
         public string Naam { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public int Leeftijd { get; set; }
+        public DateTime Geboortedatum { get; set; }
 
 
 
@@ -53,6 +53,10 @@ namespace Business
         public string GetNameWithId(int UserId)
         {
             return _userDal.GetNameWithId(UserId);
+        }
+        public void AddUser(string naam, string email, string password, DateTime geboortedatum)
+        {
+            _userDal.AddUser(naam, email, password, geboortedatum);
         }
 
     }

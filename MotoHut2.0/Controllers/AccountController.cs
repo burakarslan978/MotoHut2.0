@@ -9,19 +9,19 @@ using System.Security.Claims;
 
 namespace MotoHut2._0.Controllers
 {
-    public class LoginController : Controller
+    public class AccountController : Controller
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IUser _iuser;
 
-        public LoginController(ILogger<HomeController> logger, IUser iUser)
+        public AccountController(ILogger<HomeController> logger, IUser iUser)
         {
             _logger = logger;
             _iuser = iUser;
 
         }
 
-        public IActionResult Index()
+        public IActionResult Login()
         {
             return View();
         }
@@ -62,7 +62,22 @@ namespace MotoHut2._0.Controllers
                 }
             }
             ViewBag.ErrorMsg = "Verkeerde combinatie van email en wachtwoord";
-            return View("Index");
+            return View("Login");
+        }
+
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult RegisterButton(string txtName, string txtEmail, string txtPassword, DateTime txtBirthdate, string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+
+            _iuser.AddUser(txtName, txtEmail, txtPassword, txtBirthdate); 
+     
+            return RedirectToAction("Index", "Home");
         }
     }
 }
