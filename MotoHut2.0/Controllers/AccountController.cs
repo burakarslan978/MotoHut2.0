@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using MotoHut2._0.Collections;
 using System.Net;
 using System.Security.Claims;
+using Org.BouncyCastle.Crypto.Generators;
 
 namespace MotoHut2._0.Controllers
 {
@@ -31,15 +32,32 @@ namespace MotoHut2._0.Controllers
             await HttpContext.SignOutAsync();
             return Redirect("/");
         }
+        public static string EncodePasswordToBase64(string password)
+        {
+            try
+            {
+                byte[] encData_byte = new byte[password.Length];
+                encData_byte = System.Text.Encoding.UTF8.GetBytes(password);
+                string encodedData = Convert.ToBase64String(encData_byte);
+                return encodedData;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error in base64Encode" + ex.Message);
+            }
+        }
 
         [HttpPost]
         public async Task<IActionResult> Login(string txtEmail, string txtPassword, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
 
-            if (_iuser.CheckLogin(txtEmail, txtPassword))
+            string hashedPassword = EncodePasswordToBase64(txtPassword);
+           
+
+            if (_iuser.CheckLogin(txtEmail, hashedPassword))
             {
-                int userId = _iuser.GetUserIdWithLogin(txtEmail, txtPassword);
+                int userId = _iuser.GetUserIdWithLogin(txtEmail, hashedPassword);
 
                 var claims = new List<Claim>
                 {
@@ -74,8 +92,9 @@ namespace MotoHut2._0.Controllers
         public ActionResult RegisterButton(string txtName, string txtEmail, string txtPassword, DateTime txtBirthdate, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
+            string hashedPassword = EncodePasswordToBase64(txtPassword);
 
-            _iuser.AddUser(txtName, txtEmail, txtPassword, txtBirthdate); 
+            _iuser.AddUser(txtName, txtEmail, hashedPassword, txtBirthdate); 
      
             return RedirectToAction("Index", "Home");
         }
