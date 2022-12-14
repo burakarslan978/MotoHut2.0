@@ -5,7 +5,10 @@
 
 <div class="text-center">
     <h1 class="display-4">@User.Identity.Name</h1>
-
+    @if (!User.Identity.IsAuthenticated)
+{ 
+    <h2>Log in om een motor te kunnen huren</h2>
+}
     <h2>Te huur</h2>
     <div style="display:flex;justify-content:space-evenly;margin-bottom:100px;flex-wrap:wrap;">
         
@@ -13,14 +16,16 @@
     {
             if(item.Huurbaar == true)
             {
-                <div style="border:solid;border-color:black;background-color:lightgreen;margin-bottom:30px;">
+                <div style="border:solid;border-color:black;background-color:lightgreen;margin-bottom:30px;min-width:250px;">
 
                 <p><h4 style="color:whitesmoke;background-color:black">Motor: @item.MotorId</h4></p><br/>
                 <p><b>Merk:</b> @item.Model</p><br/>
                 <p><b>Bouwjaar:</b> @item.Bouwjaar</p><br/>
                 <p><b>Prijs/dag:</b> @item.Prijs</p><br/>
                 <p><b>Te huur:</b> Ja</p><br/>
-                <form action="@Url.Action("RentMotor","Rent")" method="post">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <form action="@Url.Action("RentMotor","Rent")" method="post">
     <table>
         <tr style="display:none">
             <td><b>MotorId:</b> </td>
@@ -40,6 +45,8 @@
     </table>
 </form>
 @ViewBag.notSuccess
+                    }
+                    
            
                 </div>
             } 

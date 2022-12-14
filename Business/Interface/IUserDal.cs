@@ -12,6 +12,7 @@ namespace Business
         public int GetHuurderId(int UserId);
         public int GetVerhuurderId(int UserId);
         public string GetNameWithId(int UserId);
-        
+        public void EditUser(string naam, string email, string password, DateTime geboortedatum, int userId);
+
     }
 }

@@ -1,0 +1,35 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model UserModel;
+<h2>Account wijzigen</h2>
+<form action="@Url.Action("EditButton","Account")" method="post">
+    <table>
+        <tr>
+            <td>Naam: </td>
+            <td><input type="text" name="txtName" value="@Model.Naam" required /></td>
+        </tr>
+        <tr>
+            <td>E-mail </td>
+            <td><input type="text" name="txtEmail" value="@Model.Email" required /></td>
+        </tr>
+        <tr>
+            <td>Wachtwoord: </td>
+            <td><input type="password" name="txtPassword" required /></td>
+            <td>Voer een nieuw of hetzelfde wachtwoord in.</td>
+        </tr>
+        <tr>
+            <td>Geboortedatum: </td>
+            <td><input type="datetime-local" name="txtBirthdate" value="@Model.Geboortedatum" required /></td>
+        </tr>
+        <tr>
+            <td colspan="2"><input type="submit" class="btn btn-info my-4" value="Wijzig account" /></td>
+        </tr>
+        <tr>
+            <td colspan="2"><input type="button" class="btn btn-secondary my-4" value="Ga terug" /></td>
+        </tr>
+    </table>
+    <h4 style="color:darkred">@ViewBag.ErrorMsg</h4>
+</form>

@@ -28,6 +28,10 @@ namespace Business
         {
             return _userCollectionDal.CheckIfEmailExists(mail);
         }
+        public void DeleteUser(int userId)
+        {
+            _userCollectionDal.DeleteUser(userId);
+        }
 
     }
 }

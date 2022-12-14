@@ -38,6 +38,46 @@ namespace Dal
                 cmd2.ExecuteNonQuery();
             }
         }
+
+        public void DeleteUser(int userId)
+        {
+            MotorCollectionDal motorCollectionDal = new MotorCollectionDal();
+
+            motorCollectionDal.DeleteMotorsForUser(userId);
+            DeleteHuurder(userId);
+            DeleteVerhuurder(userId);
+            using (var con = new SqlConnection(connectionstring))
+            {
+                var cmd = new SqlCommand("DELETE FROM [User] WHERE UserId=@UserId", con);
+                cmd.Parameters.AddWithValue("@UserId", userId);
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void DeleteVerhuurder(int userId)
+        {
+            using (var con = new SqlConnection(connectionstring))
+            {
+                var cmd = new SqlCommand("DELETE FROM Verhuurder WHERE UserId=@UserId", con);
+                cmd.Parameters.AddWithValue("@UserId", userId);
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void DeleteHuurder(int userId)
+        {
+            using (var con = new SqlConnection(connectionstring))
+            {
+                var cmd = new SqlCommand("DELETE FROM Huurder WHERE UserId=@UserId", con);
+                cmd.Parameters.AddWithValue("@UserId", userId);
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+
         public bool CheckIfEmailExists(string mail)
         {
             using (var con = new SqlConnection(connectionstring))

@@ -11,7 +11,10 @@
     <h1 class="display-4">Motoren van @User.Identity.Name</h1>
 
     <div style="display:flex;justify-content:space-evenly;margin-bottom:100px;flex-wrap:wrap;">
-
+        @if(Model.MotorModels.Count < 1)
+        {
+            <h3>Geen motoren gevonden</h3>
+        }
         @foreach (var item in Model.MotorModels)
         {
             <div style="border:solid;border-color:black;background-color:lightgreen;margin-bottom:30px;width: 200px;">

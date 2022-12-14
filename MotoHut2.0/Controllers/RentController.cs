@@ -88,7 +88,7 @@ namespace MotoHut2._0.Controllers
         public ActionResult HuurLijstSelected(int MotorId)
         {
             List<SelectListItem> items = new List<SelectListItem>();
-            foreach (var item in _imotorCollection.GetMotorList())
+            foreach (var item in _imotorCollection.GetMotorListForVerhuurder(Convert.ToInt32(GetFromClaim("verhuurderid"))))
             {
                 items.Add(new SelectListItem { Text = "" + item.MotorId + ": " + item.Bouwjaar + " " + item.Model + "", Value = item.MotorId.ToString() });
             }

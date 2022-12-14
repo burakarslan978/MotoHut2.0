@@ -12,25 +12,16 @@
                 <p><b>Geboortedatum:</b> @Model.Geboortedatum</p><br/>
                 <p><b>HuurderId:</b> @Model.HuurderId</p><br/>
                 <p><b>VerhuurderId:</b> @Model.VerhuurderId</p><br/>
-                @*<form action="@Url.Action("RentMotor","Rent")" method="post">
-    <table>
-        <tr style="display:none">
-            <td><b>MotorId:</b> </td>
-            <td><input type="number" name="id" id="id" value="@item.MotorId" readonly/></td>
-        </tr>
-        <tr>
-            <td><b>Ophaaldatum:</b> </td>
-            <td><input type="datetime-local" name="pickUpDate" id="pickUpDate" required/></td>
-        </tr>
-        <tr>
-            <td><b>Inleverdatum:</b> </td>
-            <td><input type="datetime-local" name="returnDate" id="returnDate" required /></td>
-        </tr>
-        <tr>
-            <td colspan="2"><input type="submit" value="Rent Motor" class="btn btn-info my-4" /></td>
-        </tr>
-    </table>
-</form>*@
+                <form action="@Url.Action("EditAccount","Account")" method="post">
 
+                      <input type="submit" value="Wijzig" class="btn btn-info my-4" />
+         
+                </form>
+                    <form action="@Url.Action("DeleteAccount","Account")" method="post">
+
+             <input type="submit" value="Verwijder" class="btn btn-danger my-4" />
+         
+                </form>
+                <p>Account kan alleen verwijderd worden als er geen huurovereenkomsten zijn.</p>
 
                 </div>

@@ -33,6 +33,22 @@ namespace Dal
             }
         }
 
+        public void EditUser(string naam, string email, string password, DateTime geboortedatum, int userId)
+        {
+            using (var con = new SqlConnection(connectionstring))
+            {
+                var cmd = new SqlCommand("UPDATE [User] SET Naam=@Naam, Email=@Email, Password=@Password, Geboortedatum=@Geboortedatum" +
+                    " WHERE UserId=@UserId", con);
+                cmd.Parameters.AddWithValue("@Naam", naam);
+                cmd.Parameters.AddWithValue("@Email", email);
+                cmd.Parameters.AddWithValue("@Password", password);
+                cmd.Parameters.AddWithValue("@Geboortedatum", geboortedatum);
+                cmd.Parameters.AddWithValue("@UserId", userId);
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
         public User GetUserWithLogin(string mail)
         {
             User user;

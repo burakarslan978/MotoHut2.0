@@ -122,5 +122,36 @@ namespace MotoHut2._0.Controllers
 
 
         }
+
+        public IActionResult EditAccount()
+        {
+            int id = Convert.ToInt32(GetFromClaim("userid"));
+            User user = _iuser.GetUserWithId(id);
+            UserModel userModel = new UserModel
+            {
+                Email = user.Email,
+                UserId = user.UserId,
+                Naam = user.Naam,
+                Geboortedatum = user.Geboortedatum,
+                HuurderId = Convert.ToInt32(GetFromClaim("huurderid")),
+                VerhuurderId = Convert.ToInt32(GetFromClaim("verhuurderid"))
+            };
+            return View(userModel);
+        }
+
+        public ActionResult DeleteAccount()
+        {
+            int id = Convert.ToInt32(GetFromClaim("userid"));
+            _iuserCollection.DeleteUser(id);
+            Logout();
+            return RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult EditButton(string txtName, string txtEmail, string txtPassword, DateTime txtBirthdate)
+        {
+            int id = Convert.ToInt32(GetFromClaim("userid"));
+            _iuser.EditUser(txtName, txtEmail, BCrypt.Net.BCrypt.HashPassword(txtPassword), txtBirthdate, id);
+            return RedirectToAction("Index", "Account");
+        }
     }
 }

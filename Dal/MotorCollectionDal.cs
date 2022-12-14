@@ -92,6 +92,25 @@ namespace Dal
             }
         }
 
+        public void DeleteMotorsForUser(int userId)
+        {
+            UserDal userDal = new UserDal();
+            try
+            {
+                using (var con = new SqlConnection(connectionstring))
+                {
+                    var cmd = new SqlCommand("DELETE FROM Motor WHERE VerhuurderId=@VerhuurderId", con);
+                    cmd.Parameters.AddWithValue("@VerhuurderId", userDal.GetVerhuurderId(userId));
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            } catch(Exception er)
+            {
+                Console.WriteLine(er.ToString());
+            }
+            
+        }
+
     }
 }
 

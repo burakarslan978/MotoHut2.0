@@ -59,6 +59,10 @@ namespace Business
         {
             return _userDal.GetNameWithId(UserId);
         }
+        public void EditUser(string naam, string email, string password, DateTime geboortedatum, int userId)
+        {
+            _userDal.EditUser(naam, email, password, geboortedatum, userId);
+        }
 
 
 
