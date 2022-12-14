@@ -12,5 +12,6 @@ namespace Business
         public List<Motor> GetMotorList();
         public void AddMotor(string merk, int bouwjaar, int prijs, bool huurbaar, int verhuurderId);
         public void DeleteMotor(int motorId);
+        public List<Motor> GetMotorListForVerhuurder(int verhuurderId);
     }
 }

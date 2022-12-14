@@ -36,6 +36,27 @@ namespace Dal
             }
         }
 
+        public List<Motor> GetMotorListForVerhuurder(int verhuurderId)
+        {
+            List<Motor> controlList = new List<Motor>();
+            using (var con = new SqlConnection(connectionstring))
+            {
+                using (var cmd = new SqlCommand("SELECT MotorId,Model,Bouwjaar,Prijs,Huurbaar FROM Motor WHERE VerhuurderId=@VerhuurderId", con))
+                {
+                    cmd.Parameters.AddWithValue("@VerhuurderId", verhuurderId);
+                    con.Open();
+                    SqlDataReader rdr = cmd.ExecuteReader();
+                    while (rdr.Read())
+                    {
+                        Motor motor = new Motor { MotorId = (int)rdr["MotorId"], Model = (string)rdr["Model"], Bouwjaar = (int)rdr["Bouwjaar"], Prijs = (int)rdr["Prijs"], Huurbaar = (bool)rdr["Huurbaar"] };
+
+                        controlList.Add(motor);
+                    }
+                }
+                return controlList;
+            }
+        }
+
         public void AddMotor(string merk, int bouwjaar, int prijs, bool huurbaar, int verhuurderId)
         {
             using (var con = new SqlConnection(connectionstring))

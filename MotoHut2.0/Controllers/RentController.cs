@@ -26,32 +26,38 @@ namespace MotoHut2._0.Controllers
 
         public IActionResult HuurLijst()
         {
-            List<SelectListItem> items = new List<SelectListItem>();
-
-
-            List<MotorViewModel> list1 = new List<MotorViewModel>();
-            foreach (var item in _imotorCollection.GetMotorList())
+            if (User.Identity.IsAuthenticated)
             {
-                list1.Add(new MotorViewModel { MotorId = item.MotorId, VerhuurderId = item.VerhuurderId, Bouwjaar = item.Bouwjaar, Prijs = item.Prijs, Model = item.Model, Huurbaar = item.Huurbaar });
-                items.Add(new SelectListItem { Text = "" + item.MotorId + ": " + item.Bouwjaar + " " + item.Model + "", Value = item.MotorId.ToString() });
-            }
+                List<SelectListItem> items = new List<SelectListItem>();
 
-            List<HuurderMotorViewModel> list2 = new List<HuurderMotorViewModel>();
-            foreach (var item in _ihuurderMotorCollection.GetHuurderMotorList())
-            {
-                list2.Add(new HuurderMotorViewModel { HuurderMotorId = item.HuurderMotorId, MotorId = item.MotorId, HuurderId = item.HuurderId, OphaalDatum = item.OphaalDatum, InleverDatum = item.InleverDatum });
-            }
+                List<MotorViewModel> list1 = new List<MotorViewModel>();
+                List<HuurderMotorViewModel> list2 = new List<HuurderMotorViewModel>();
+                foreach (var item in _imotorCollection.GetMotorListForVerhuurder(Convert.ToInt32(GetFromClaim("verhuurderid"))))
+                {
+                    list1.Add(new MotorViewModel { MotorId = item.MotorId, VerhuurderId = item.VerhuurderId, Bouwjaar = item.Bouwjaar, Prijs = item.Prijs, Model = item.Model, Huurbaar = item.Huurbaar });
+                    items.Add(new SelectListItem { Text = "" + item.MotorId + ": " + item.Bouwjaar + " " + item.Model + "", Value = item.MotorId.ToString() });
+                    foreach(var huurderMotor in _ihuurderMotorCollection.GetHuurderMotorListForMotor(item.MotorId))
+                    {
+                        list2.Add(new HuurderMotorViewModel
+                        {
+                            HuurderId = huurderMotor.HuurderId,
+                            HuurderMotorId = huurderMotor.HuurderMotorId,
+                            MotorId = item.MotorId,
+                            OphaalDatum = huurderMotor.OphaalDatum,
+                            InleverDatum = huurderMotor.InleverDatum,
+                            IsGeaccepteerd = huurderMotor.IsGeaccepteerd
+                        });
+                    }
+                }
 
-            ViewModel viewModel = new ViewModel { HuurderMotorModels = list2, MotorModels = list1, Motors = items };
-            return View(viewModel);
+                ViewModel viewModel = new ViewModel { HuurderMotorModels = list2, MotorModels = list1, Motors = items };
+                return View(viewModel);
+            }
+            return RedirectToAction("Login", "Account");
         }
-
-
 
         public ActionResult RentMotor(int id, DateTime pickUpDate, DateTime returnDate)
         {
-
-
             Motor model = new Motor();
 
             if (_ihuurderMotor.CheckAvailability(id, pickUpDate, returnDate) && pickUpDate <= returnDate && pickUpDate > DateTime.Now.AddHours(2))
@@ -72,7 +78,6 @@ namespace MotoHut2._0.Controllers
             {
                 model.MotorId = -2;
             }
-
 
             MotorViewModel motorViewModel = new MotorViewModel { MotorId = model.MotorId, Bouwjaar = model.Bouwjaar, Model = model.Model, Prijs = model.Prijs };
             HuurderMotorViewModel huurderMotorViewModel = new HuurderMotorViewModel { OphaalDatum = pickUpDate, InleverDatum = returnDate };
@@ -125,6 +130,20 @@ namespace MotoHut2._0.Controllers
             _ihuurderMotor.AcceptOrDeclineRent(HuurderMotorId, "Decline");
             return RedirectToAction("HuurLijstSelected");
         }
-    
+
+        public string GetFromClaim(string claim)
+        {
+            try
+            {
+                return User.Claims.Where(c => c.Type == claim)
+                               .Select(c => c.Value).SingleOrDefault();
+            }
+            catch (Exception er)
+            {
+                return er.ToString();
+            }
+
+        }
+
     }
 }

@@ -7,6 +7,7 @@ using MotoHut2._0.Collections;
 using System.Net;
 using System.Security.Claims;
 using Org.BouncyCastle.Crypto.Generators;
+using MotoHut2._0.Models;
 
 namespace MotoHut2._0.Controllers
 {
@@ -14,11 +15,35 @@ namespace MotoHut2._0.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IUser _iuser;
+        private readonly IUserCollection _iuserCollection;
 
-        public AccountController(ILogger<HomeController> logger, IUser iUser)
+        public AccountController(ILogger<HomeController> logger, IUser iUser, IUserCollection iuserCollection)
         {
             _logger = logger;
             _iuser = iUser;
+            _iuserCollection = iuserCollection;
+        }
+        public string GetFromClaim(string claim)
+        {
+            try
+            {
+                return User.Claims.Where(c => c.Type == claim)
+                               .Select(c => c.Value).SingleOrDefault();
+            } catch (Exception er)
+            {
+                return er.ToString();
+            }
+            
+        }
+
+        public IActionResult Index()
+        {
+            int id = Convert.ToInt32(GetFromClaim("userid"));
+            User user = _iuser.GetUserWithId(id);
+            UserModel userModel = new UserModel { Email = user.Email, UserId = user.UserId, Naam = user.Naam,
+                Geboortedatum = user.Geboortedatum, HuurderId = Convert.ToInt32(GetFromClaim("huurderid")),
+                VerhuurderId = Convert.ToInt32(GetFromClaim("verhuurderid")) };
+            return View(userModel);
 
         }
 
@@ -32,55 +57,48 @@ namespace MotoHut2._0.Controllers
             await HttpContext.SignOutAsync();
             return Redirect("/");
         }
-        public static string EncodePasswordToBase64(string password)
-        {
-            try
-            {
-                byte[] encData_byte = new byte[password.Length];
-                encData_byte = System.Text.Encoding.UTF8.GetBytes(password);
-                string encodedData = Convert.ToBase64String(encData_byte);
-                return encodedData;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error in base64Encode" + ex.Message);
-            }
-        }
 
         [HttpPost]
         public async Task<IActionResult> Login(string txtEmail, string txtPassword, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
 
-            string hashedPassword = EncodePasswordToBase64(txtPassword);
-           
-
-            if (_iuser.CheckLogin(txtEmail, hashedPassword))
+            User verifyUser = _iuser.GetHashedPasswordAndUserId(txtEmail);
+            if(verifyUser != null)
             {
-                int userId = _iuser.GetUserIdWithLogin(txtEmail, hashedPassword);
-
-                var claims = new List<Claim>
+                if (BCrypt.Net.BCrypt.Verify(txtPassword, verifyUser.Password))
                 {
-                    new Claim("email", txtEmail),
-                    new Claim("userid", userId.ToString()),
-                    new Claim("naam", _iuser.GetNameWithId(userId)),
-                    new Claim("huurderid", _iuser.GetHuurderId(userId).ToString()),
-                    new Claim("verhuurderid", _iuser.GetVerhuurderId(userId).ToString())
-                };
+                    User user = _iuser.GetUserWithId(verifyUser.UserId);
 
-                await HttpContext.SignInAsync(new ClaimsPrincipal(new ClaimsIdentity(claims, "Cookies", "naam", "userid")));
+                    var claims = createClaims(user);
 
-                if (Url.IsLocalUrl(returnUrl))
-                {
-                    return Redirect(returnUrl);
+                    await HttpContext.SignInAsync(new ClaimsPrincipal(new ClaimsIdentity(claims, "Cookies", "naam", "userid")));
+
+                    if (Url.IsLocalUrl(returnUrl))
+                    {
+                        return Redirect(returnUrl);
+                    }
+                    else
+                    {
+                        return Redirect("/");
+                    }
                 }
-                else
-                {
-                    return Redirect("/");
-                }
+                
             }
             ViewBag.ErrorMsg = "Verkeerde combinatie van email en wachtwoord";
             return View("Login");
+        }
+
+        public List<Claim> createClaims(User user)
+        {
+            return new List<Claim>
+                {
+                    new Claim("email", user.Email),
+                    new Claim("userid", user.UserId.ToString()),
+                    new Claim("naam", user.Naam.ToString()),
+                    new Claim("huurderid", _iuser.GetHuurderId(user.UserId).ToString()),
+                    new Claim("verhuurderid", _iuser.GetVerhuurderId(user.UserId).ToString())
+                };
         }
 
         public IActionResult Register()
@@ -92,11 +110,17 @@ namespace MotoHut2._0.Controllers
         public ActionResult RegisterButton(string txtName, string txtEmail, string txtPassword, DateTime txtBirthdate, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
-            string hashedPassword = EncodePasswordToBase64(txtPassword);
 
-            _iuser.AddUser(txtName, txtEmail, hashedPassword, txtBirthdate); 
-     
-            return RedirectToAction("Index", "Home");
+            if (!_iuserCollection.CheckIfEmailExists(txtEmail))
+            {
+                _iuserCollection.AddUser(txtName, txtEmail, BCrypt.Net.BCrypt.HashPassword(txtPassword), txtBirthdate);
+                return RedirectToAction("Index", "Home");
+            }
+
+            ViewBag.ErrorMsg = "Email bestaat al";
+            return View("Register");
+
+
         }
     }
 }

@@ -24,5 +24,13 @@ namespace Business
         {
             return _huurderMotorCollectionDal.GetHuurderMotorListForMotor(motorId);
         }
+
+        public void DeleteHuurderMotorForMotor(int motorId)
+        {
+            _huurderMotorCollectionDal.DeleteHuurderMotorForMotor(motorId);
+        }
+
+
+
     }
 }

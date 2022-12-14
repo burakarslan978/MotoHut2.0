@@ -14,6 +14,8 @@ builder.Services.AddSingleton<IMotorDal, MotorDal>();
 builder.Services.AddSingleton<IMotorCollectionDal, MotorCollectionDal>();
 builder.Services.AddSingleton<IMotor, Motor>();
 builder.Services.AddSingleton<IUser, User>();
+builder.Services.AddSingleton<IUserCollection, UserCollection>();
+builder.Services.AddSingleton<IUserCollectionDal, UserCollectionDal>();
 builder.Services.AddSingleton<IUserDal, UserDal>();
 builder.Services.AddSingleton<IHuurderMotorCollection, HuurderMotorCollection>();
 builder.Services.AddSingleton<IHuurderMotorCollectionDal, HuurderMotorCollectionDal>();

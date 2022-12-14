@@ -10,11 +10,15 @@
             <span class="navbar-text text-dark">Logged in! @User.Identity.Name</span>
         </li>
         <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="MyMotor" asp-action="Index">Mijn Motoren</a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Index">My Account</a>
         </li>
         <li class="nav-item">
             <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Sign out</a>
         </li>
+        
     }
     else
     {

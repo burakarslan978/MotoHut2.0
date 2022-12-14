@@ -21,17 +21,22 @@ namespace Business
 
         private readonly IUserDal _userDal;
 
+
         public User(IUserDal i)
         {
             _userDal = i;
         }
-        public bool CheckLogin(string mail, string password)
+        //public bool CheckLogin(string mail, string password)
+        //{
+        //    return _userDal.CheckLogin(mail, password);
+        //}
+        public User GetHashedPasswordAndUserId(string mail)
         {
-            return _userDal.CheckLogin(mail, password);
+            return _userDal.GetHashedPasswordAndUserId(mail);
         }
-        public User GetUserWithLogin(string mail, string password)
+        public User GetUserWithLogin(string mail)
         {
-            return _userDal.GetUserWithLogin(mail, password);
+            return _userDal.GetUserWithLogin(mail);
         }
         public User GetUserWithId(int UserId)
         {
@@ -45,19 +50,17 @@ namespace Business
         {
             return _userDal.GetVerhuurderId(UserId);
         }
-        public int GetUserIdWithLogin(string mail, string password)
+        public int GetUserIdWithLogin(string mail)
         {
-            return _userDal.GetUserIdWithLogin(mail, password);
+            return _userDal.GetUserIdWithLogin(mail);
         }
 
         public string GetNameWithId(int UserId)
         {
             return _userDal.GetNameWithId(UserId);
         }
-        public void AddUser(string naam, string email, string password, DateTime geboortedatum)
-        {
-            _userDal.AddUser(naam, email, password, geboortedatum);
-        }
+
+
 
     }
 }

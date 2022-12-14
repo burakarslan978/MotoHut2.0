@@ -24,8 +24,6 @@ namespace MotoHut2._0.Controllers
 
         public IActionResult Index()
         {
-            
-            
             List<MotorViewModel> list = new List<MotorViewModel>();
             foreach(var item in _imotorCollection.GetMotorList())
             {

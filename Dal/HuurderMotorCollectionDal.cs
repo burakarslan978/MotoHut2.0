@@ -52,6 +52,17 @@ namespace Dal
                 return controlList;
             }
         }
+        
+        public void DeleteHuurderMotorForMotor(int motorId)
+        {
+            using (var con = new SqlConnection(connectionstring))
+            {
+                var cmd = new SqlCommand("DELETE FROM HuurderMotor WHERE MotorId=@MotorId", con);
+                cmd.Parameters.AddWithValue("@MotorId", motorId);
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
 
         
     }

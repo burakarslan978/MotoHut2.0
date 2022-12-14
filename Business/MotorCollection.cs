@@ -24,5 +24,9 @@ namespace MotoHut2._0
         {
             _motorCollectionDal.DeleteMotor(motorId);
         }
+        public List<Motor> GetMotorListForVerhuurder(int verhuurderId)
+        {
+            return _motorCollectionDal.GetMotorListForVerhuurder(verhuurderId);
+        }
     }
 }
