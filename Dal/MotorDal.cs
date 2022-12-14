@@ -32,14 +32,14 @@ namespace Dal
             Motor motor;
             using (var con = new SqlConnection(connectionstring))
             {
-                var cmd = new SqlCommand("SELECT MotorId,Model,Bouwjaar,Prijs,Huurbaar FROM Motor WHERE MotorId=@MotorId", con);
+                var cmd = new SqlCommand("SELECT MotorId,VerhuurderId,Model,Bouwjaar,Prijs,Huurbaar FROM Motor WHERE MotorId=@MotorId", con);
                 cmd.Parameters.AddWithValue("@MotorId", motorId);
                 con.Open();
                 SqlDataReader sdr = cmd.ExecuteReader();
                 
                 if (sdr.Read())
                 {
-                    motor = new Motor {MotorId = (int)sdr["MotorId"], VerhuurderId = 1, Model = (string)sdr["Model"], Bouwjaar = (int)sdr["Bouwjaar"], Prijs = (int)sdr["Prijs"], Huurbaar = (bool)sdr["Huurbaar"] };
+                    motor = new Motor {MotorId = (int)sdr["MotorId"], VerhuurderId = (int)sdr["VerhuurderId"], Model = (string)sdr["Model"], Bouwjaar = (int)sdr["Bouwjaar"], Prijs = (int)sdr["Prijs"], Huurbaar = (bool)sdr["Huurbaar"] };
                 }
                 else
                 {
@@ -47,6 +47,30 @@ namespace Dal
                 }
             }
             return motor;
+        }
+
+        public void EditMotor(string merk, int bouwjaar, int prijs, bool huurbaar, int motorId)
+        {
+            using (var con = new SqlConnection(connectionstring))
+            {
+                try
+                {
+                    var cmd = new SqlCommand("UPDATE Motor SET Model=@Model, Bouwjaar=@Bouwjaar, Prijs=@Prijs, Huurbaar=@huurbaar" +
+                    " WHERE MotorId=@MotorId", con);
+                    cmd.Parameters.AddWithValue("@huurbaar", huurbaar);
+                    cmd.Parameters.AddWithValue("@Model", merk);
+                    cmd.Parameters.AddWithValue("@Bouwjaar", bouwjaar);
+                    cmd.Parameters.AddWithValue("@Prijs", prijs);
+                    cmd.Parameters.AddWithValue("@MotorId", motorId);
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                Console.WriteLine(ex.ToString());
+                }
+
+        }
         }
 
 

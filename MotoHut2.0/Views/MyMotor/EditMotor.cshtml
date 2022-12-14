@@ -1,0 +1,46 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Voeg Motor Toe";
+}
+@model MotorViewModel;
+<h3>Motor @Model.MotorId</h3>
+    <form action="EditMotorButton" method="post">
+        <table>
+            <tr>
+                <td>Merk: </td>
+                <td><input type="text" name="txtMerk" value="@Model.Model" required /></td>
+            </tr>
+            <tr>
+                <td>Bouwjaar: </td>
+                <td><input type="number" name="txtBouwjaar" value="@Model.Bouwjaar" required min="1900" max="2025" /></td>
+            </tr>
+            <tr>
+                <td>Prijs: </td>
+                <td><input type="number" name="txtPrijs" value="@Model.Prijs" required min="1" /></td>
+            </tr>
+            <tr>
+                <td>Huurbaar:</td>
+                <td>
+                    <select name="huurbaar" required>
+                        <option value="Ja">Ja</option>
+                        <option value="Nee">Nee</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+            <td colspan="2"><input type="submit" class="btn btn-info my-4" value="Bevestig wijzigingen" /></td>
+        </tr>
+        <tr>
+            <td colspan="2"><input type="button" class="btn btn-secondary my-4" value="Ga terug" /></td>
+        </tr>
+        <input type="number" style="display:none" name="motorId" id="motorId" value="@Model.MotorId" readonly />
+        </table>
+    </form>
+

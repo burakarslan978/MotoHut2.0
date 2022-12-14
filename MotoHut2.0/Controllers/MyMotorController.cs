@@ -1,4 +1,6 @@
-﻿using Business.Interface;
+﻿using Business;
+using Business.Interface;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Mvc;
 using MotoHut2._0.Collections;
 using MotoHut2._0.Models;
@@ -10,12 +12,14 @@ namespace MotoHut2._0.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IMotorCollection _imotorCollection;
         private readonly IHuurderMotorCollection _ihuurderMotorCollection;
+        private readonly IMotor _imotor;
 
-        public MyMotorController(ILogger<HomeController> logger, IMotorCollection iMotorCollection, IHuurderMotorCollection iHuurderMotorCollection)
+        public MyMotorController(ILogger<HomeController> logger, IMotorCollection iMotorCollection, IHuurderMotorCollection iHuurderMotorCollection, IMotor iMotor)
         {
             _logger = logger;
             _imotorCollection = iMotorCollection;
             _ihuurderMotorCollection = iHuurderMotorCollection;
+            _imotor = iMotor;
         }
 
         public string GetFromClaim(string claim)
@@ -43,6 +47,37 @@ namespace MotoHut2._0.Controllers
             ViewModel viewModel = new ViewModel { MotorModels = list };
             return View(viewModel);
 
+        }
+
+        public IActionResult EditMotor(int id)
+        {
+            Motor motor = _imotor.GetMotor(id);
+            MotorViewModel motorViewModel = new MotorViewModel
+            {
+                MotorId = motor.MotorId,
+                Bouwjaar = motor.Bouwjaar,
+                Model = motor.Model,
+                Prijs = motor.Prijs,
+                Huurbaar = motor.Huurbaar
+            };
+
+
+            return View(motorViewModel);
+
+        }
+
+        public ActionResult EditMotorButton(string txtMerk, int txtBouwjaar, int txtPrijs, string huurbaar, int motorId) 
+        {
+            if (huurbaar == "Nee")
+            {
+                _imotor.EditMotor(txtMerk, txtBouwjaar, txtPrijs, false, motorId);
+            }
+            else if (huurbaar == "Ja")
+            {
+                _imotor.EditMotor(txtMerk, txtBouwjaar, txtPrijs, true, motorId);
+            }
+
+            return RedirectToAction("Index", "MyMotor");
         }
 
         public ActionResult DeleteMotor(int id)

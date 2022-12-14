@@ -38,5 +38,9 @@ namespace Business
         {
             return _motorDal.GetMotor(motorId);
         }
+        public void EditMotor(string merk, int bouwjaar, int prijs, bool huurbaar, int motorId)
+        {
+            _motorDal.EditMotor(merk, bouwjaar, prijs, huurbaar, motorId);
+        }
     }
 }

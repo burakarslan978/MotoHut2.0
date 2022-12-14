@@ -41,7 +41,8 @@ namespace Dal
             List<Motor> controlList = new List<Motor>();
             using (var con = new SqlConnection(connectionstring))
             {
-                using (var cmd = new SqlCommand("SELECT MotorId,Model,Bouwjaar,Prijs,Huurbaar FROM Motor WHERE VerhuurderId=@VerhuurderId", con))
+                using (var cmd = new SqlCommand("SELECT MotorId,Model,Bouwjaar,Prijs,Huurbaar FROM Motor" +
+                    " WHERE VerhuurderId=@VerhuurderId", con))
                 {
                     cmd.Parameters.AddWithValue("@VerhuurderId", verhuurderId);
                     con.Open();
@@ -61,14 +62,22 @@ namespace Dal
         {
             using (var con = new SqlConnection(connectionstring))
             {
-                var cmd = new SqlCommand("INSERT INTO Motor (VerhuurderId, Model, Bouwjaar, Prijs, Huurbaar) VALUES(@VerhuurderId,@Model,@Bouwjaar,@Prijs,@huurbaar)", con);
-                cmd.Parameters.AddWithValue("@huurbaar", huurbaar);
-                cmd.Parameters.AddWithValue("@Model", merk);
-                cmd.Parameters.AddWithValue("@Bouwjaar", bouwjaar);
-                cmd.Parameters.AddWithValue("@Prijs", prijs);
-                cmd.Parameters.AddWithValue("@VerhuurderId", verhuurderId);
-                con.Open();
-                cmd.ExecuteNonQuery();
+                try
+                {
+                    var cmd = new SqlCommand("INSERT INTO Motor (VerhuurderId, Model, Bouwjaar, Prijs, Huurbaar)" +
+                    " VALUES(@VerhuurderId,@Model,@Bouwjaar,@Prijs,@huurbaar)", con);
+                    cmd.Parameters.AddWithValue("@huurbaar", huurbaar);
+                    cmd.Parameters.AddWithValue("@Model", merk);
+                    cmd.Parameters.AddWithValue("@Bouwjaar", bouwjaar);
+                    cmd.Parameters.AddWithValue("@Prijs", prijs);
+                    cmd.Parameters.AddWithValue("@VerhuurderId", verhuurderId);
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                } catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
+                
             }
         }
 
