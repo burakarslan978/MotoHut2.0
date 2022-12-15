@@ -33,19 +33,18 @@ namespace MotoHut2._0.Controllers
             {
                 return er.ToString();
             }
-            
         }
 
         public IActionResult Index()
         {
-            int id = Convert.ToInt32(GetFromClaim("userid"));
-            User user = _iuser.GetUserWithId(id);
-            int leeftijd = GetAge(user.Geboortedatum);
-            UserModel userModel = new UserModel { Email = user.Email, UserId = user.UserId, Naam = user.Naam,
-                Geboortedatum = user.Geboortedatum, HuurderId = Convert.ToInt32(GetFromClaim("huurderid")),
-                VerhuurderId = Convert.ToInt32(GetFromClaim("verhuurderid")),
-            Leeftijd = leeftijd};
-            return View(userModel);
+            //int id = Convert.ToInt32(GetFromClaim("userid"));
+            //User user = _iuser.GetUserWithId(id);
+            //int leeftijd = GetAge(user.Geboortedatum);
+            //UserModel userModel = new UserModel { Email = user.Email, UserId = user.UserId, Naam = user.Naam,
+            //    Geboortedatum = user.Geboortedatum, HuurderId = Convert.ToInt32(GetFromClaim("huurderid")),
+            //    VerhuurderId = Convert.ToInt32(GetFromClaim("verhuurderid")),
+            //Leeftijd = leeftijd};
+            return View(GetCurrentUserAsViewModel());
 
         }
 
@@ -120,17 +119,29 @@ namespace MotoHut2._0.Controllers
 
             if (!_iuserCollection.CheckIfEmailExists(txtEmail))
             {
-                _iuserCollection.AddUser(txtName, txtEmail, BCrypt.Net.BCrypt.HashPassword(txtPassword), txtBirthdate);
-                return RedirectToAction("Index", "Home");
+                if(GetAge(txtBirthdate) >= 18)
+                {
+                    _iuserCollection.AddUser(txtName, txtEmail, BCrypt.Net.BCrypt.HashPassword(txtPassword), txtBirthdate);
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ViewBag.ErrorMsg = "Je moet minimaal 18 jaar zijn";
+                }
+                
+            }
+            else
+            {
+                ViewBag.ErrorMsg = "Email bestaat al";
             }
 
-            ViewBag.ErrorMsg = "Email bestaat al";
+            
             return View("Register");
 
 
         }
 
-        public IActionResult EditAccount()
+        public UserModel GetCurrentUserAsViewModel()
         {
             int id = Convert.ToInt32(GetFromClaim("userid"));
             User user = _iuser.GetUserWithId(id);
@@ -141,9 +152,15 @@ namespace MotoHut2._0.Controllers
                 Naam = user.Naam,
                 Geboortedatum = user.Geboortedatum,
                 HuurderId = Convert.ToInt32(GetFromClaim("huurderid")),
-                VerhuurderId = Convert.ToInt32(GetFromClaim("verhuurderid"))
+                VerhuurderId = Convert.ToInt32(GetFromClaim("verhuurderid")),
+                Leeftijd = GetAge(user.Geboortedatum)
             };
-            return View(userModel);
+            return userModel;
+        }
+
+        public IActionResult EditAccount()
+        {
+            return View(GetCurrentUserAsViewModel());
         }
 
         public ActionResult DeleteAccount()
@@ -159,8 +176,24 @@ namespace MotoHut2._0.Controllers
         public ActionResult EditButton(string txtName, string txtEmail, string txtPassword, DateTime txtBirthdate)
         {
             int id = Convert.ToInt32(GetFromClaim("userid"));
-            _iuser.EditUser(txtName, txtEmail, BCrypt.Net.BCrypt.HashPassword(txtPassword), txtBirthdate, id);
-            return RedirectToAction("Index", "Account");
+            if (txtEmail == GetFromClaim("email") || !_iuserCollection.CheckIfEmailExists(txtEmail))
+            {
+                if (GetAge(txtBirthdate) >= 18)
+                {
+                    _iuser.EditUser(txtName, txtEmail, BCrypt.Net.BCrypt.HashPassword(txtPassword), txtBirthdate, id);
+                    return RedirectToAction("Index", "Account");
+                }
+                else
+                {
+                    ViewBag.ErrorMsg = "Je moet minimaal 18 jaar zijn";
+                }
+            }
+            else
+            {
+                ViewBag.ErrorMsg = "Email bestaat al";
+            }
+
+            return View("EditAccount", GetCurrentUserAsViewModel());
         }
     }
 }

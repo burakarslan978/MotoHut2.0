@@ -7,11 +7,13 @@
 
 <div style="border:solid;border-color:black;background-color:lightgreen;margin-bottom:30px;">
 
-                <p><h4 style="color:whitesmoke;background-color:black">Naam: @Model.Naam</h4></p><br/>
-                <p><b>UserId:</b> @Model.UserId</p><br/>
-                <p><b>Geboortedatum:</b> @Model.Geboortedatum (@Model.Leeftijd)</p><br/>
-                <p><b>HuurderId:</b> @Model.HuurderId</p><br/>
-                <p><b>VerhuurderId:</b> @Model.VerhuurderId</p><br/>
+                <p><h4 style="color:whitesmoke;background-color:black">Mijn account</h4></p><br/>
+                <p><b>Naam:</b> @Model.Naam</p>
+                <p><b>UserId:</b> @Model.UserId</p>
+                <p><b>E-mail:</b> @Model.Email</p>
+                <p><b>Geboortedatum:</b> @Model.Geboortedatum (@Model.Leeftijd jaar oud)</p>
+                <p><b>HuurderId:</b> @Model.HuurderId</p>
+                <p><b>VerhuurderId:</b> @Model.VerhuurderId</p>
                 <form action="@Url.Action("EditAccount","Account")" method="post">
 
                       <input type="submit" value="Wijzig" class="btn btn-info my-4" />

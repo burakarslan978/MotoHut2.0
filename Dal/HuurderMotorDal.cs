@@ -21,7 +21,7 @@ namespace Dal
             {
                 foreach (var item in controlList)
                 {
-                    return !(ophaal <= item.InleverDatum && inlever >= item.OphaalDatum);
+                    return !(ophaal <= item.InleverDatum && inlever >= item.OphaalDatum && item.IsGeaccepteerd == true);
                 }
             }
             return true;
