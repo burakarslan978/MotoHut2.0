@@ -63,7 +63,18 @@ namespace Business
         {
             _userDal.EditUser(naam, email, password, geboortedatum, userId);
         }
-
+        public int GetUserIdWithVerhuurderId(int verhuurderId)
+        {
+            return _userDal.GetUserIdWithVerhuurderId(verhuurderId);
+        }
+        public int GetUserIdWithHuurderId(int huurderId)
+        {
+            return _userDal.GetUserIdWithHuurderId(huurderId);
+        }
+        public DateTime GetDoBWithId(int UserId)
+        {
+            return _userDal.GetDoBWithId(UserId);
+        }
 
 
     }

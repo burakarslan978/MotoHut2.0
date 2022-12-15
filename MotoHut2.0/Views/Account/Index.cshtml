@@ -9,7 +9,7 @@
 
                 <p><h4 style="color:whitesmoke;background-color:black">Naam: @Model.Naam</h4></p><br/>
                 <p><b>UserId:</b> @Model.UserId</p><br/>
-                <p><b>Geboortedatum:</b> @Model.Geboortedatum</p><br/>
+                <p><b>Geboortedatum:</b> @Model.Geboortedatum (@Model.Leeftijd)</p><br/>
                 <p><b>HuurderId:</b> @Model.HuurderId</p><br/>
                 <p><b>VerhuurderId:</b> @Model.VerhuurderId</p><br/>
                 <form action="@Url.Action("EditAccount","Account")" method="post">
@@ -22,6 +22,6 @@
              <input type="submit" value="Verwijder" class="btn btn-danger my-4" />
          
                 </form>
-                <p>Account kan alleen verwijderd worden als er geen huurovereenkomsten zijn.</p>
+                <p>Bij verwijderen account worden alle motoren en bijbehorende huurverzoeken verwijderd.</p>
 
                 </div>

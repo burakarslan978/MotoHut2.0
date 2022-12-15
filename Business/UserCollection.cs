@@ -28,9 +28,9 @@ namespace Business
         {
             return _userCollectionDal.CheckIfEmailExists(mail);
         }
-        public void DeleteUser(int userId)
+        public void DeleteUser(int userId, int huurderId, int verhuurderId)
         {
-            _userCollectionDal.DeleteUser(userId);
+            _userCollectionDal.DeleteUser(userId, huurderId, verhuurderId);
         }
 
     }

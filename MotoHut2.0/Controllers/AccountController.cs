@@ -40,11 +40,18 @@ namespace MotoHut2._0.Controllers
         {
             int id = Convert.ToInt32(GetFromClaim("userid"));
             User user = _iuser.GetUserWithId(id);
+            int leeftijd = GetAge(user.Geboortedatum);
             UserModel userModel = new UserModel { Email = user.Email, UserId = user.UserId, Naam = user.Naam,
                 Geboortedatum = user.Geboortedatum, HuurderId = Convert.ToInt32(GetFromClaim("huurderid")),
-                VerhuurderId = Convert.ToInt32(GetFromClaim("verhuurderid")) };
+                VerhuurderId = Convert.ToInt32(GetFromClaim("verhuurderid")),
+            Leeftijd = leeftijd};
             return View(userModel);
 
+        }
+
+        public int GetAge(DateTime dob)
+        {
+            return DateTime.Now.Subtract(dob).Days / 365;
         }
 
         public IActionResult Login()
@@ -141,8 +148,10 @@ namespace MotoHut2._0.Controllers
 
         public ActionResult DeleteAccount()
         {
-            int id = Convert.ToInt32(GetFromClaim("userid"));
-            _iuserCollection.DeleteUser(id);
+            int userId = Convert.ToInt32(GetFromClaim("userid"));
+            int huurderId = Convert.ToInt32(GetFromClaim("huurderid"));
+            int verhuurderId = Convert.ToInt32(GetFromClaim("verhuurderid"));
+            _iuserCollection.DeleteUser(userId, huurderId, verhuurderId);
             Logout();
             return RedirectToAction("Index", "Home");
         }

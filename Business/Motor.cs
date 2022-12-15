@@ -29,9 +29,9 @@ namespace Business
 
 
 
-        public void RentMotor(int motorId, DateTime ophaal, DateTime inlever)
+        public void RentMotor(int motorId, DateTime ophaal, DateTime inlever, int prijs, int huurderId)
         {
-            _motorDal.RentMotorDal(motorId, ophaal, inlever);
+            _motorDal.RentMotorDal(motorId, ophaal, inlever, prijs, huurderId);
         }
 
         public Motor GetMotor(int motorId)

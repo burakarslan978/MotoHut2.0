@@ -22,7 +22,7 @@
                         <p><h4 style="color:whitesmoke;background-color:black">Motor: @item.MotorId</h4></p><br/>
                         <p><b>Merk:</b> @item.Model</p><br/>
                         <p><b>Bouwjaar:</b> @item.Bouwjaar</p><br/>
-                        <p><b>Prijs/dag:</b> @item.Prijs</p><br/>
+                        <p><b>Prijs/dag:</b> €@item.Prijs</p><br/>
                 <p><b>Te huur:</b> @if(@item.Huurbaar){ <p>Ja</p> } else  { <p>Nee</p> }</p><br />
                 <form action="@Url.Action("EditMotor","MyMotor")" method="post">
                     <input type="number" style="display:none" name="id" id="id" value="@item.MotorId" readonly />

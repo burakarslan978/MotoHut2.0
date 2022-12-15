@@ -116,7 +116,6 @@ namespace Dal
 
         public string GetNameWithId(int UserId)
         {
-            User user;
             using (var con = new SqlConnection(connectionstring))
             {
                 var cmd = new SqlCommand("SELECT Naam FROM [User] WHERE UserId=@userId", con);
@@ -131,6 +130,27 @@ namespace Dal
                 else
                 {
                     return "-";
+                }
+            }
+
+        }
+
+        public DateTime GetDoBWithId(int UserId)
+        {
+            using (var con = new SqlConnection(connectionstring))
+            {
+                var cmd = new SqlCommand("SELECT Geboortedatum FROM [User] WHERE UserId=@userId", con);
+                cmd.Parameters.AddWithValue("@userId", UserId);
+                con.Open();
+                SqlDataReader sdr = cmd.ExecuteReader();
+
+                if (sdr.Read())
+                {
+                    return (DateTime)sdr["Geboortedatum"];
+                }
+                else
+                {
+                    return DateTime.Now;
                 }
             }
 
@@ -168,6 +188,46 @@ namespace Dal
                 if (sdr.Read())
                 {
                     return (int)sdr["VerhuurderId"];
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+        }
+
+        public int GetUserIdWithVerhuurderId(int verhuurderId)
+        {
+            using (var con = new SqlConnection(connectionstring))
+            {
+                var cmd = new SqlCommand("SELECT UserId FROM Verhuurder WHERE VerhuurderId=@verhuurderId", con);
+                cmd.Parameters.AddWithValue("@verhuurderId", verhuurderId);
+                con.Open();
+                SqlDataReader sdr = cmd.ExecuteReader();
+
+                if (sdr.Read())
+                {
+                    return (int)sdr["UserId"];
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+        }
+
+        public int GetUserIdWithHuurderId(int huurderId)
+        {
+            using (var con = new SqlConnection(connectionstring))
+            {
+                var cmd = new SqlCommand("SELECT UserId FROM Huurder WHERE HuurderId=@huurderId", con);
+                cmd.Parameters.AddWithValue("@huurderId", huurderId);
+                con.Open();
+                SqlDataReader sdr = cmd.ExecuteReader();
+
+                if (sdr.Read())
+                {
+                    return (int)sdr["UserId"];
                 }
                 else
                 {

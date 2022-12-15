@@ -21,13 +21,13 @@ namespace Dal
             List<Motor> controlList = new List<Motor>();
             using (var con = new SqlConnection(connectionstring))
             {
-                using (var cmd = new SqlCommand("SELECT MotorId,Model,Bouwjaar,Prijs,Huurbaar FROM Motor", con))
+                using (var cmd = new SqlCommand("SELECT MotorId,VerhuurderId,Model,Bouwjaar,Prijs,Huurbaar FROM Motor", con))
                 {
                     con.Open();
                     SqlDataReader rdr = cmd.ExecuteReader();
                     while (rdr.Read())
                     {
-                        Motor motor = new Motor { MotorId = (int)rdr["MotorId"], VerhuurderId = 1, Model = (string)rdr["Model"], Bouwjaar = (int)rdr["Bouwjaar"], Prijs = (int)rdr["Prijs"], Huurbaar = (bool)rdr["Huurbaar"] };
+                        Motor motor = new Motor { MotorId = (int)rdr["MotorId"], VerhuurderId = (int)rdr["VerhuurderId"], Model = (string)rdr["Model"], Bouwjaar = (int)rdr["Bouwjaar"], Prijs = (int)rdr["Prijs"], Huurbaar = (bool)rdr["Huurbaar"] };
 
                         controlList.Add(motor);
                     }
@@ -83,6 +83,8 @@ namespace Dal
 
         public void DeleteMotor(int motorId)
         {
+            HuurderMotorCollectionDal huurderMotorCollectionDal = new HuurderMotorCollectionDal();
+            huurderMotorCollectionDal.DeleteHuurderMotorForMotor(motorId);
             using (var con = new SqlConnection(connectionstring))
             {
                 var cmd = new SqlCommand("DELETE FROM Motor WHERE MotorId=@MotorId", con);
@@ -92,21 +94,12 @@ namespace Dal
             }
         }
 
-        public void DeleteMotorsForUser(int userId)
+        public void DeleteMotorsForVerhuurder(int verhuurderId)
         {
-            UserDal userDal = new UserDal();
-            try
+            List<Motor> MotorList = GetMotorListForVerhuurder(verhuurderId);
+            foreach(var motor in MotorList)
             {
-                using (var con = new SqlConnection(connectionstring))
-                {
-                    var cmd = new SqlCommand("DELETE FROM Motor WHERE VerhuurderId=@VerhuurderId", con);
-                    cmd.Parameters.AddWithValue("@VerhuurderId", userDal.GetVerhuurderId(userId));
-                    con.Open();
-                    cmd.ExecuteNonQuery();
-                }
-            } catch(Exception er)
-            {
-                Console.WriteLine(er.ToString());
+                DeleteMotor(motor.MotorId);
             }
             
         }

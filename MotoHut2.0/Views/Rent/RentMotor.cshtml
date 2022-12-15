@@ -17,7 +17,10 @@
                 <p><b>Bouwjaar:</b> @Model.MotorViewModel.Bouwjaar</p><br/>
                 <p><b>Prijs/dag:</b> @Model.MotorViewModel.Prijs</p><br/>
                 <p><b>Ophaaldatum:</b> @Model.HuurderMotorViewModel.OphaalDatum</p><br/>
-                <p><b>Inleverdatum:</b>  @Model.HuurderMotorViewModel.InleverDatum</p>
+                <p><b>Inleverdatum:</b>  @Model.HuurderMotorViewModel.InleverDatum</p><br/>
+                <p><b>Prijs per dag:</b>  €@Model.HuurderMotorViewModel.Prijs</p>
+                <p><b>Aantal dagen:</b>  @Model.HuurderMotorViewModel.Dagen</p>
+                <p><b>Totaalprijs:</b>  €@Model.HuurderMotorViewModel.TotaalPrijs</p>
     </div>
 }
 else if (Model.MotorViewModel.MotorId == 0)

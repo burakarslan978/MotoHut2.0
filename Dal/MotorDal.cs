@@ -13,14 +13,16 @@ namespace Dal
         private readonly string connectionstring = "Server=mssqlstud.fhict.local;Database=dbi391688;User Id=dbi391688;Password=Ikd2N)E105;";
 
 
-        public void RentMotorDal(int motorId, DateTime ophaal, DateTime inlever)
+        public void RentMotorDal(int motorId, DateTime ophaal, DateTime inlever, int prijs, int huurderId)
         {
             using (var con = new SqlConnection(connectionstring))
             {
-                var cmd = new SqlCommand("INSERT INTO HuurderMotor (MotorId,OphaalDatum,InleverDatum) VALUES(@MotorId,@OphaalDatum,@InleverDatum)", con);
+                var cmd = new SqlCommand("INSERT INTO HuurderMotor (MotorId,HuurderId,OphaalDatum,InleverDatum,Prijs,IsGeaccepteerd) VALUES(@MotorId,@HuurderId,@OphaalDatum,@InleverDatum,@Prijs,NULL)", con);
                 cmd.Parameters.AddWithValue("@MotorId", motorId);
                 cmd.Parameters.AddWithValue("@OphaalDatum", ophaal);
                 cmd.Parameters.AddWithValue("@InleverDatum", inlever);
+                cmd.Parameters.AddWithValue("@Prijs", prijs);
+                cmd.Parameters.AddWithValue("@HuurderId", huurderId);
                 con.Open();
                 cmd.ExecuteNonQuery();
                 

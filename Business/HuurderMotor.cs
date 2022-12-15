@@ -15,8 +15,8 @@ namespace Business
         public int HuurderId { get; set; }
         public DateTime OphaalDatum { get; set; }
         public DateTime InleverDatum { get; set; }
-        public bool IsGeaccepteerd { get; set; }
-        public bool IsGeweigerd { get; set; }
+        public bool? IsGeaccepteerd { get; set; }
+        public int Prijs { get; set; }
 
         private readonly IHuurderMotorDal _huurderMotorDal;
         public HuurderMotor(IHuurderMotorDal i)
@@ -24,9 +24,9 @@ namespace Business
             _huurderMotorDal = i;
         }
 
-        public void AcceptOrDeclineRent(int huurderMotorId, string acceptOrDecline)
+        public void AcceptOrDeclineRent(int huurderMotorId, bool AcceptRent)
         {
-            _huurderMotorDal.AcceptOrDeclineRent(huurderMotorId, acceptOrDecline);
+            _huurderMotorDal.AcceptOrDeclineRent(huurderMotorId, AcceptRent);
         }
         public bool CheckAvailability(int motorId, DateTime ophaal, DateTime inlever)
         {

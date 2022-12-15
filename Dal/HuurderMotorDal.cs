@@ -27,20 +27,12 @@ namespace Dal
             return true;
         }
 
-        public void AcceptOrDeclineRent(int huurderMotorId, string acceptOrDecline)
+        public void AcceptOrDeclineRent(int huurderMotorId, bool AcceptRent)
         {
             using (var con = new SqlConnection(connectionstring))
             {
-                string _decision = "";
-                if (acceptOrDecline == "Accept")
-                {
-                    _decision = "IsGeaccepteerd";
-                }
-                else if (acceptOrDecline == "Decline")
-                {
-                    _decision = "IsGeweigerd";
-                }
-                var cmd = new SqlCommand("UPDATE HuurderMotor SET "+_decision+"=1 WHERE HuurderMotorId=@HuurderMotorId", con);             
+                var cmd = new SqlCommand("UPDATE HuurderMotor SET IsGeaccepteerd=@Accept WHERE HuurderMotorId=@HuurderMotorId", con);             
+                cmd.Parameters.AddWithValue("@Accept", AcceptRent);
                 cmd.Parameters.AddWithValue("@HuurderMotorId", huurderMotorId);
                 con.Open();
                 cmd.ExecuteNonQuery();

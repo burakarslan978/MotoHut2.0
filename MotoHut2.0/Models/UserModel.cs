@@ -8,5 +8,6 @@
         public int VerhuurderId { get; set; }
         public int HuurderId { get; set; }
         public DateTime Geboortedatum { get; set; }
+        public int Leeftijd { get; set; }
     }
 }

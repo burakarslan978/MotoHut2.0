@@ -29,8 +29,8 @@
                     <td>@item.MotorId</td>
                 </tr>
                 <tr>
-                    <td><b>HuurderId:</b></td>
-                    <td>@item.HuurderId</td>
+                    <td><b>Huurder:</b></td>
+                    <td>@item.HuurderNaam (@item.HuurderLeeftijd)</td>
                 </tr>
                 <tr>
                     <td><b>Ophaaldatum:</b></td>
@@ -40,15 +40,27 @@
                     <td><b>Inleverdatum:</b></td>
                     <td>@item.InleverDatum</td>
                 </tr>
-                @if (item.IsGeaccepteerd == false && item.IsGeweigerd == false)
+                <tr>
+                    <td><b>Prijs:</b></td>
+                    <td>€@item.Prijs</td>
+                </tr>
+                <tr>
+                    <td><b>Dagen:</b></td>
+                    <td>@item.Dagen</td>
+                </tr>
+                <tr>
+                    <td><b>Totaalprijs:</b></td>
+                    <td>€@item.TotaalPrijs</td>
+                </tr>
+                @if (item.IsGeaccepteerd == null)
                 {
                     <form action="@Url.Action("AcceptRent","Rent")" method="post">
                     <tr>
                         <td><input type="number" name="MotorId" id="MotorId" value="@item.MotorId" style="display:none" readonly /></td>
+                        <td colspan="2"><input type="submit" value="Accepteer" class="btn btn-info my-2" /></td>
                         <td><input type="number" name="HuurderMotorId" id="HuurderMotorId" value="@item.HuurderMotorId" style="display:none" readonly /></td>
                         <td><input type="datetime" name="OphaalDatum" id="OphaalDatum" value="@item.OphaalDatum" style="display:none" readonly /></td>
                         <td><input type="datetime" name="InleverDatum" id="InleverDatum" value="@item.InleverDatum" style="display:none" readonly /></td>
-                        <td colspan="2"><input type="submit" value="Accepteer" class="btn btn-info my-2" /></td>
                     </tr>
                     </form>
                     <form action="@Url.Action("DeclineRent","Rent")" method="post">
@@ -64,7 +76,7 @@
                         <td colspan="2"><h3>Huur is geaccepteerd</h3></td>
                     </tr>
                 }
-                else if (item.IsGeweigerd == true)
+                else if (item.IsGeaccepteerd == false)
                 {
                     <tr style="border-bottom: 1px solid;color:whitesmoke;background-color:darkred;margin-bottom:20px;">
                         <td colspan="2"><h3>Huur is geweigerd</h3></td>

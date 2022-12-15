@@ -39,11 +39,12 @@ namespace Dal
             }
         }
 
-        public void DeleteUser(int userId)
+        public void DeleteUser(int userId, int huurderId, int verhuurderId)
         {
             MotorCollectionDal motorCollectionDal = new MotorCollectionDal();
-
-            motorCollectionDal.DeleteMotorsForUser(userId);
+            HuurderMotorCollectionDal huurderMotorCollectionDal =  new HuurderMotorCollectionDal();
+            huurderMotorCollectionDal.DeleteHuurderMotorForHuurder(huurderId);
+            motorCollectionDal.DeleteMotorsForVerhuurder(verhuurderId);
             DeleteHuurder(userId);
             DeleteVerhuurder(userId);
             using (var con = new SqlConnection(connectionstring))

@@ -9,7 +9,7 @@ namespace Business
 {
     public interface IHuurderMotorDal
     {
-        public void AcceptOrDeclineRent(int huurderMotorId, string acceptOrDecline);
+        public void AcceptOrDeclineRent(int huurderMotorId, bool AcceptRent);
         public bool CheckAvailability(int motorId, DateTime ophaal, DateTime inlever);
     }
 }

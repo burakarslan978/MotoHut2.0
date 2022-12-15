@@ -4,6 +4,7 @@
     {
         public int MotorId { get; set; }
         public int VerhuurderId { get; set; }
+        public string VerhuurderNaam { get; set; }
         public int Bouwjaar { get; set; }
         public int Prijs { get; set; }
         public string Model { get; set; }

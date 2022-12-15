@@ -17,13 +17,13 @@ namespace Dal
             List<HuurderMotor> controlList = new List<HuurderMotor>();
             using (var con = new SqlConnection(connectionstring))
             {
-                using (var cmd = new SqlCommand("SELECT HuurderMotorId,MotorId,OphaalDatum,InleverDatum,IsGeaccepteerd,IsGeweigerd FROM HuurderMotor", con))
+                using (var cmd = new SqlCommand("SELECT HuurderMotorId,HuurderId,MotorId,OphaalDatum,InleverDatum,IsGeaccepteerd FROM HuurderMotor", con))
                 {
                     con.Open();
                     SqlDataReader rdr = cmd.ExecuteReader();
                     while (rdr.Read())
                     {
-                        HuurderMotor huurdermotor = new HuurderMotor { HuurderMotorId = (int)rdr["HuurderMotorId"], MotorId = (int)rdr["MotorId"], HuurderId = 1, OphaalDatum = (DateTime)rdr["OphaalDatum"], InleverDatum = (DateTime)rdr["InleverDatum"], IsGeaccepteerd = (bool)rdr["IsGeaccepteerd"], IsGeweigerd = (bool)rdr["IsGeweigerd"] };
+                        HuurderMotor huurdermotor = new HuurderMotor { HuurderMotorId = (int)rdr["HuurderMotorId"], MotorId = (int)rdr["MotorId"], HuurderId = (int)rdr["HuurderId"], OphaalDatum = (DateTime)rdr["OphaalDatum"], InleverDatum = (DateTime)rdr["InleverDatum"], IsGeaccepteerd = CheckIfBoolColumnIsNull(rdr["IsGeaccepteerd"]), Prijs = (int)rdr["Prijs"] };
 
                         controlList.Add(huurdermotor);
                     }
@@ -37,20 +37,32 @@ namespace Dal
             List<HuurderMotor> controlList = new List<HuurderMotor>();
             using (var con = new SqlConnection(connectionstring))
             {
-                using (var cmd = new SqlCommand("SELECT HuurderMotorId,MotorId,OphaalDatum,InleverDatum,IsGeaccepteerd,IsGeweigerd FROM HuurderMotor WHERE MotorId=@MotorID", con))
+                using (var cmd = new SqlCommand("SELECT HuurderMotorId,HuurderId,MotorId,OphaalDatum,InleverDatum,IsGeaccepteerd,Prijs FROM HuurderMotor WHERE MotorId=@MotorID", con))
                 {
                     cmd.Parameters.AddWithValue("@MotorId", motorId);
                     con.Open();
                     SqlDataReader rdr = cmd.ExecuteReader();
                     while (rdr.Read())
                     {
-                        HuurderMotor huurdermotor = new HuurderMotor { HuurderMotorId = (int)rdr["HuurderMotorId"], MotorId = (int)rdr["MotorId"], HuurderId = 1, OphaalDatum = (DateTime)rdr["OphaalDatum"], InleverDatum = (DateTime)rdr["InleverDatum"], IsGeaccepteerd = (bool)rdr["IsGeaccepteerd"], IsGeweigerd = (bool)rdr["IsGeweigerd"] };
+                        HuurderMotor huurdermotor = new HuurderMotor { HuurderMotorId = (int)rdr["HuurderMotorId"], MotorId = (int)rdr["MotorId"], HuurderId = (int)rdr["HuurderId"], OphaalDatum = (DateTime)rdr["OphaalDatum"], InleverDatum = (DateTime)rdr["InleverDatum"], IsGeaccepteerd = CheckIfBoolColumnIsNull(rdr["IsGeaccepteerd"]), Prijs = (int)rdr["Prijs"] };
 
                         controlList.Add(huurdermotor);
                     }
                 }
                 return controlList;
             }
+        }
+
+        private bool? CheckIfBoolColumnIsNull(object obj)
+        {
+            if(obj == System.DBNull.Value)
+            {
+                return null;
+            } else
+            {
+                return Convert.ToBoolean(obj);
+            }
+            
         }
         
         public void DeleteHuurderMotorForMotor(int motorId)
@@ -64,6 +76,19 @@ namespace Dal
             }
         }
 
-        
+        public void DeleteHuurderMotorForHuurder(int huurderId)
+        {
+            using (var con = new SqlConnection(connectionstring))
+            {
+                var cmd = new SqlCommand("DELETE FROM HuurderMotor WHERE HuurderId=@huurderId", con);
+                cmd.Parameters.AddWithValue("@huurderId", huurderId);
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+
+
+
     }
 }
