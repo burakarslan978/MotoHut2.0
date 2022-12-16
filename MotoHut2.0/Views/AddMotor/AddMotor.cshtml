@@ -11,31 +11,32 @@
         <table>
             <tr>
                 <td>Merk: </td>
-                <td><input type="text" name="txtMerk" required/></td>
+                <td><input type="text" name="txtMerk" required /></td>
             </tr>
             <tr>
                 <td>Bouwjaar: </td>
-                <td><input type="number" name="txtBouwjaar" required min="1900" max="2025"/></td>
+                <td><input type="number" name="txtBouwjaar" required min="1900" max="2025" /></td>
             </tr>
             <tr>
                 <td>Prijs: </td>
-                <td><input type="number" name="txtPrijs" required min="1"/></td>
+                <td><input type="number" name="txtPrijs" required min="1" /></td>
             </tr>
             <tr>
                 <td>Huurbaar:</td>
                 <td>
                     <select name="huurbaar" required>
-                    <option value="Ja">Ja</option>
-                    <option value="Nee">Nee</option>
-                </select>
+                        <option value="Ja">Ja</option>
+                        <option value="Nee">Nee</option>
+                    </select>
                 </td>
             </tr>
             <tr>
-                <td colspan="2" ><input type="submit" value="Voeg motor toe" /></td>
+                <td colspan="2"><input type="submit" value="Voeg motor toe" /></td>
             </tr>
         </table>
     </form>
-} else
+}
+else
 {
     <h2>Je moet ingelogd zijn om motors toe te voegen.</h2>
 }

@@ -30,7 +30,7 @@ namespace MotoHut2._0.Controllers
 
         public IActionResult HuurLijst()
         {
-            if (User.Identity.IsAuthenticated)
+            if (User?.Identity?.IsAuthenticated ?? false)
             {
                 List<MotorViewModel> motorViewModel = new List<MotorViewModel>();
                 List<HuurderMotorViewModel> huurderMotorViewModel = new List<HuurderMotorViewModel>();
@@ -38,11 +38,10 @@ namespace MotoHut2._0.Controllers
                 {
                     motorViewModel.Add(ConvertMotorToMotorViewModel(item));
                     huurderMotorViewModel.AddRange(GetHuurderMotorViewModelForMotor(item.MotorId)); ;
-
                 }
 
-                ViewModel viewModel = new ViewModel 
-                { 
+                ViewModel viewModel = new ViewModel
+                {
                     HuurderMotorModels = huurderMotorViewModel,
                     MotorModels = motorViewModel,
                     Motors = GetCurrentUserSelectItemsViewModel()
@@ -55,12 +54,10 @@ namespace MotoHut2._0.Controllers
         public ActionResult RentMotor(int id, DateTime pickUpDate, DateTime returnDate)
         {
             Motor motor = new Motor();
-            int TotalDays = 0;
             if (_ihuurderMotor.CheckAvailability(id, pickUpDate, returnDate) && pickUpDate <= returnDate && pickUpDate > DateTime.Now.AddHours(2))
             {
                 motor = _imotor.GetMotor(id);
                 _imotor.RentMotor(id, pickUpDate, returnDate, motor.Prijs, Convert.ToInt32(GetFromClaim("huurderid")));
-                TotalDays = CalculateDays(pickUpDate, returnDate);
             }
             else
             {
@@ -77,9 +74,9 @@ namespace MotoHut2._0.Controllers
             }
 
             MotorViewModel motorViewModel = ConvertMotorToMotorViewModel(motor);
-            HuurderMotorViewModel huurderMotorViewModel = new HuurderMotorViewModel { OphaalDatum = pickUpDate, InleverDatum = returnDate, Prijs = motor.Prijs, Dagen = TotalDays, TotaalPrijs = motor.Prijs * TotalDays };
-            ViewModel viewModel = new ViewModel 
-            { 
+            HuurderMotorViewModel huurderMotorViewModel = new HuurderMotorViewModel { OphaalDatum = pickUpDate, InleverDatum = returnDate, Prijs = motor.Prijs };
+            ViewModel viewModel = new ViewModel
+            {
                 MotorViewModel = motorViewModel,
                 HuurderMotorViewModel = huurderMotorViewModel
             };
@@ -88,10 +85,12 @@ namespace MotoHut2._0.Controllers
         }
         public ActionResult HuurLijstSelected(int MotorId)
         {
-            ViewModel viewModel = new ViewModel { 
+            ViewModel viewModel = new ViewModel
+            {
                 HuurderMotorModels = GetHuurderMotorViewModelForMotor(MotorId),
                 Motors = GetCurrentUserSelectItemsViewModel(),
-                MotorViewModel = ConvertMotorToMotorViewModel(_imotor.GetMotor(MotorId)) };
+                MotorViewModel = ConvertMotorToMotorViewModel(_imotor.GetMotor(MotorId))
+            };
             return View(viewModel);
 
         }
@@ -101,16 +100,19 @@ namespace MotoHut2._0.Controllers
             List<SelectListItem> items = new List<SelectListItem>();
             foreach (var item in _imotorCollection.GetMotorListForVerhuurder(Convert.ToInt32(GetFromClaim("verhuurderid"))))
             {
-                items.Add(new SelectListItem 
-                { Text = "" + item.MotorId + ": " + item.Bouwjaar + " " 
-                + item.Model + "", Value = item.MotorId.ToString() });
+                items.Add(new SelectListItem
+                {
+                    Text = "" + item.MotorId + ": " + item.Bouwjaar + " "
+                + item.Model + "",
+                    Value = item.MotorId.ToString()
+                });
             }
             return items;
         }
 
         private MotorViewModel ConvertMotorToMotorViewModel(Motor motor)
         {
-            if(motor != null)
+            if (motor != null)
             {
                 MotorViewModel viewModel = new MotorViewModel
                 {
@@ -124,7 +126,7 @@ namespace MotoHut2._0.Controllers
                 return viewModel;
             }
             return new MotorViewModel();
-            
+
         }
 
         private List<HuurderMotorViewModel> GetHuurderMotorViewModelForMotor(int motorId)
@@ -132,7 +134,6 @@ namespace MotoHut2._0.Controllers
             List<HuurderMotorViewModel> list = new List<HuurderMotorViewModel>();
             foreach (var item in _ihuurderMotorCollection.GetHuurderMotorListForMotor(motorId))
             {
-                int dagen = CalculateDays(item.OphaalDatum, item.InleverDatum);
                 list.Add(ConvertItemToHuurderMotorViewModel(item));
             }
             return list;
@@ -140,62 +141,34 @@ namespace MotoHut2._0.Controllers
 
         private HuurderMotorViewModel ConvertItemToHuurderMotorViewModel(HuurderMotor huurderMotor)
         {
-            int dagen = CalculateDays(huurderMotor.OphaalDatum, huurderMotor.InleverDatum);
             HuurderMotorViewModel viewModel = new HuurderMotorViewModel
             {
                 HuurderId = huurderMotor.HuurderId,
                 HuurderMotorId = huurderMotor.HuurderMotorId,
                 HuurderNaam = _iuser.GetNameWithId(_iuser.GetUserIdWithHuurderId(huurderMotor.HuurderId)),
-                HuurderLeeftijd = GetAgeFromDoB(_iuser.GetDoBWithId(_iuser.GetUserIdWithHuurderId(huurderMotor.HuurderId))),
+                HuurderLeeftijd = _iuser.GetAgeWithId(_iuser.GetUserIdWithHuurderId(huurderMotor.HuurderId)),
                 MotorId = huurderMotor.MotorId,
                 OphaalDatum = huurderMotor.OphaalDatum,
                 InleverDatum = huurderMotor.InleverDatum,
                 IsGeaccepteerd = huurderMotor.IsGeaccepteerd,
-                Prijs = huurderMotor.Prijs,
-                Dagen = dagen,
-                TotaalPrijs = huurderMotor.Prijs * dagen
+                Prijs = huurderMotor.Prijs
             };
             return viewModel;
-        }
-
-        public int CalculateDays(DateTime ophaalDatum, DateTime inleverDatum)
-        {
-            return Convert.ToInt32(Math.Ceiling((inleverDatum - ophaalDatum).TotalDays));
         }
 
         public ActionResult AcceptRent(int HuurderMotorId, int MotorId, DateTime OphaalDatum, DateTime InleverDatum)
         {
             _ihuurderMotor.AcceptOrDeclineRent(HuurderMotorId, true);
 
-            DeclineOverlappingRents(HuurderMotorId, MotorId, OphaalDatum, InleverDatum);
-            
+            _ihuurderMotorCollection.DeclineOverlappingRents(HuurderMotorId, MotorId, OphaalDatum, InleverDatum);
+
             return RedirectToAction("HuurLijstSelected", new { MotorId = MotorId });
         }
 
-        public void DeclineOverlappingRents(int huurderMotorId, int motorId, DateTime ophaalDatum, DateTime inleverDatum)
-        {
-            List<HuurderMotor> list = _ihuurderMotorCollection.GetHuurderMotorListForMotor(motorId);
-            foreach (var item in list)
-            {
-                if (CheckIfOverlaps(item, huurderMotorId, ophaalDatum, inleverDatum))
-                {
-                    _ihuurderMotor.AcceptOrDeclineRent(item.HuurderMotorId, false);
-                }
-            }
-        }
-
-        private bool CheckIfOverlaps(HuurderMotor huurderMotor, int huurderMotorId, DateTime ophaalDatum, DateTime inleverDatum)
-        {
-            return (huurderMotor.HuurderMotorId != huurderMotorId
-                    && huurderMotor.IsGeaccepteerd != true
-                    && huurderMotor.OphaalDatum <= inleverDatum
-                    && huurderMotor.InleverDatum >= ophaalDatum);
-        }
-
-        public ActionResult DeclineRent(int HuurderMotorId)
+        public ActionResult DeclineRent(int HuurderMotorId, int MotorId)
         {
             _ihuurderMotor.AcceptOrDeclineRent(HuurderMotorId, false);
-            return RedirectToAction("HuurLijstSelected");
+            return RedirectToAction("HuurLijstSelected", new { MotorId = MotorId });
         }
 
         public string GetFromClaim(string claim)
@@ -210,10 +183,6 @@ namespace MotoHut2._0.Controllers
                 return er.ToString();
             }
 
-        }
-        public int GetAgeFromDoB(DateTime dob)
-        {
-            return DateTime.Now.Subtract(dob).Days / 365;
         }
 
     }

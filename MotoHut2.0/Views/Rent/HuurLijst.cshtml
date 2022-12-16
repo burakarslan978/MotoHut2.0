@@ -14,82 +14,101 @@
 }
 
 <h1>Overzicht van alle huurverzoeken</h1>
-<table style="border: 1px solid;width:75%;">
-    @if (Model.HuurderMotorModels.Count > 0)
+@if(Model.MotorModels.Count > 0)
+{
+    @foreach (var motor in Model.MotorModels)
     {
-        foreach (var item in Model.HuurderMotorModels)
+        <h2>Huuraanvragen van <b>@motor.Bouwjaar @motor.Model</b></h2>
+        @if (Model.HuurderMotorModels.Any(x => x.MotorId == motor.MotorId))
         {
-            <table style="border: 5px solid;width:75%;margin-bottom:50px;">
-                <tr style="border-top: 1px solid;">
-                    <td><b>Huurnummer:</b></td>
-                    <td>@item.HuurderMotorId</td>
-                </tr>
-                <tr>
-                    <td><b>MotorId:</b></td>
-                    <td>@item.MotorId</td>
-                </tr>
-                <tr>
-                    <td><b>Huurder:</b></td>
-                    <td>@item.HuurderNaam (@item.HuurderLeeftijd)</td>
-                </tr>
-                <tr>
-                    <td><b>Ophaaldatum:</b></td>
-                    <td>@item.OphaalDatum</td>
-                </tr>
-                <tr>
-                    <td><b>Inleverdatum:</b></td>
-                    <td>@item.InleverDatum</td>
-                </tr>
-                <tr>
-                    <td><b>Prijs:</b></td>
-                    <td>€@item.Prijs</td>
-                </tr>
-                <tr>
-                    <td><b>Dagen:</b></td>
-                    <td>@item.Dagen</td>
-                </tr>
-                <tr>
-                    <td><b>Totaalprijs:</b></td>
-                    <td>€@item.TotaalPrijs</td>
-                </tr>
-                @if (item.IsGeaccepteerd == null)
+            foreach (var item in Model.HuurderMotorModels)
+            {
+                if (item.MotorId == motor.MotorId)
                 {
-                    <form action="@Url.Action("AcceptRent","Rent")" method="post">
-                    <tr>
-                        <td><input type="number" name="MotorId" id="MotorId" value="@item.MotorId" style="display:none" readonly /></td>
-                        <td colspan="2"><input type="submit" value="Accepteer" class="btn btn-info my-2" /></td>
-                        <td><input type="number" name="HuurderMotorId" id="HuurderMotorId" value="@item.HuurderMotorId" style="display:none" readonly /></td>
-                        <td><input type="datetime" name="OphaalDatum" id="OphaalDatum" value="@item.OphaalDatum" style="display:none" readonly /></td>
-                        <td><input type="datetime" name="InleverDatum" id="InleverDatum" value="@item.InleverDatum" style="display:none" readonly /></td>
-                    </tr>
-                    </form>
-                    <form action="@Url.Action("DeclineRent","Rent")" method="post">
-                    <tr style="border-bottom: 1px solid;">
-                        <td><input type="number" name="HuurderMotorId" id="HuurderMotorId" value="@item.HuurderMotorId" style="display:none" readonly /></td>
-                        <td colspan="2"><input type="submit" value="Weiger" class="btn btn-danger my-2" /></td>
-                    </tr>
-                    </form>
+                    <table style="border: 5px solid;width:75%;margin-bottom:50px;">
+                        <tr style="border-top: 1px solid;">
+                            <td><b>Huurnummer:</b></td>
+                            <td>@item.HuurderMotorId</td>
+                        </tr>
+                        <tr>
+                            <td><b>MotorId:</b></td>
+                            <td>@item.MotorId</td>
+                        </tr>
+                        <tr>
+                            <td><b>Huurder:</b></td>
+                            <td>@item.HuurderNaam (@item.HuurderLeeftijd)</td>
+                        </tr>
+                        <tr>
+                            <td><b>Ophaaldatum:</b></td>
+                            <td>@item.OphaalDatum</td>
+                        </tr>
+                        <tr>
+                            <td><b>Inleverdatum:</b></td>
+                            <td>@item.InleverDatum</td>
+                        </tr>
+                        <tr>
+                            <td><b>Prijs:</b></td>
+                            <td>€@item.Prijs</td>
+                        </tr>
+                        <tr>
+                            <td><b>Dagen:</b></td>
+                            <td>@item.Dagen</td>
+                        </tr>
+                        <tr>
+                            <td><b>Totaalprijs:</b></td>
+                            <td>€@item.TotaalPrijs</td>
+                        </tr>
+                        @if (item.IsGeaccepteerd == null)
+                        {
+                            <form action="@Url.Action("AcceptRent","Rent")" method="post">
+                            <tr>
+                                <td><input type="number" name="MotorId" id="MotorId" value="@item.MotorId" style="display:none" readonly /></td>
+                                <td colspan="2"><input type="submit" value="Accepteer" class="btn btn-info my-2" /></td>
+                                <td><input type="number" name="HuurderMotorId" id="HuurderMotorId" value="@item.HuurderMotorId" style="display:none" readonly /></td>
+                                <td><input type="datetime" name="OphaalDatum" id="OphaalDatum" value="@item.OphaalDatum" style="display:none" readonly /></td>
+                                <td><input type="datetime" name="InleverDatum" id="InleverDatum" value="@item.InleverDatum" style="display:none" readonly /></td>
+                            </tr>
+                            </form>
+                            <form action="@Url.Action("DeclineRent","Rent")" method="post">
+                            <tr style="border-bottom: 1px solid;">
+                                <td><input type="number" name="HuurderMotorId" id="HuurderMotorId" value="@item.HuurderMotorId" style="display:none" readonly /></td>
+                                <td colspan="2"><input type="submit" value="Weiger" class="btn btn-danger my-2" /></td>
+                                <td><input type="number" name="MotorId" id="MotorId" value="@item.MotorId" style="display:none" readonly /></td>
+                            </tr>
+                            </form>
+                        }
+                        else if (item.IsGeaccepteerd == true)
+                        {
+                            <tr style="border-bottom: 1px solid;color:whitesmoke;background-color:darkolivegreen;margin-bottom:20px;">
+                                <td colspan="2"><h3>Huur is geaccepteerd</h3></td>
+                            </tr>
+                        }
+                        else if (item.IsGeaccepteerd == false)
+                        {
+                            <tr style="border-bottom: 1px solid;color:whitesmoke;background-color:darkred;margin-bottom:20px;">
+                                <td colspan="2"><h3>Huur is geweigerd</h3></td>
+                            </tr>
+                        }
+                    </table>
                 }
-                else if (item.IsGeaccepteerd == true)
-                {
-                    <tr style="border-bottom: 1px solid;color:whitesmoke;background-color:darkolivegreen;margin-bottom:20px;">
-                        <td colspan="2"><h3>Huur is geaccepteerd</h3></td>
-                    </tr>
-                }
-                else if (item.IsGeaccepteerd == false)
-                {
-                    <tr style="border-bottom: 1px solid;color:whitesmoke;background-color:darkred;margin-bottom:20px;">
-                        <td colspan="2"><h3>Huur is geweigerd</h3></td>
-                    </tr>
-                }
+
+            }
+        }
+        else
+        {
+            <table>
+                <tr>
+                    <td><h3>Geen huurdata gevonden</h3></td>
+                </tr>
             </table>
         }
+
     }
-    else
-    {
-        <table>
-            <tr>
-                <td><h3>Geen huurdata gevonden</h3></td>
-            </tr>
-        </table>
-    }
+}
+else
+{
+    <h2>Geen motoren gevonden</h2>
+}
+
+    
+        

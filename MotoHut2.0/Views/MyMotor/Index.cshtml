@@ -11,7 +11,7 @@
     <h1 class="display-4">Motoren van @User.Identity.Name</h1>
 
     <div style="display:flex;justify-content:space-evenly;margin-bottom:100px;flex-wrap:wrap;">
-        @if(Model.MotorModels.Count < 1)
+        @if (Model.MotorModels.Count < 1)
         {
             <h3>Geen motoren gevonden</h3>
         }
@@ -19,23 +19,30 @@
         {
             <div style="border:solid;border-color:black;background-color:lightgreen;margin-bottom:30px;width: 200px;">
 
-                        <p><h4 style="color:whitesmoke;background-color:black">Motor: @item.MotorId</h4></p><br/>
-                        <p><b>Merk:</b> @item.Model</p><br/>
-                        <p><b>Bouwjaar:</b> @item.Bouwjaar</p><br/>
-                        <p><b>Prijs/dag:</b> €@item.Prijs</p><br/>
-                <p><b>Te huur:</b> @if(@item.Huurbaar){ <p>Ja</p> } else  { <p>Nee</p> }</p><br />
+                <p><h4 style="color:whitesmoke;background-color:black">Motor: @item.MotorId</h4></p><br />
+                <p><b>Merk:</b> @item.Model</p><br />
+                <p><b>Bouwjaar:</b> @item.Bouwjaar</p><br />
+                <p><b>Prijs/dag:</b> €@item.Prijs</p><br />
+                <p><b>Te huur:</b> @if (@item.Huurbaar)
+                    {
+                        <p>Ja</p>
+                    }
+                    else
+                    {
+                        <p>Nee</p>
+                    }</p><br />
                 <form action="@Url.Action("EditMotor","MyMotor")" method="post">
                     <input type="number" style="display:none" name="id" id="id" value="@item.MotorId" readonly />
-                      <input type="submit" value="Wijzig" class="btn btn-info my-4" />
-         
+                    <input type="submit" value="Wdijzig" class="btn btn-info my-4" />
+
                 </form>
-                    <form action="@Url.Action("DeleteMotor","MyMotor")" method="post">
+                <form action="@Url.Action("DeleteMotor","MyMotor")" method="post">
                     <input type="number" style="display:none" name="id" id="id" value="@item.MotorId" readonly />
-             <input type="submit" value="Verwijder" class="btn btn-danger my-4" />
-         
+                    <input type="submit" value="Verwijder" class="btn btn-danger my-4" />
+
                 </form>
-      
-                        </div>
-            
+
+            </div>
+
         }
     </div>

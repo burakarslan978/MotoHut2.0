@@ -29,7 +29,8 @@ namespace MotoHut2._0.Controllers
             {
                 return User.Claims.Where(c => c.Type == claim)
                                .Select(c => c.Value).SingleOrDefault();
-            } catch (Exception er)
+            }
+            catch (Exception er)
             {
                 return er.ToString();
             }
@@ -37,20 +38,13 @@ namespace MotoHut2._0.Controllers
 
         public IActionResult Index()
         {
-            //int id = Convert.ToInt32(GetFromClaim("userid"));
-            //User user = _iuser.GetUserWithId(id);
-            //int leeftijd = GetAge(user.Geboortedatum);
-            //UserModel userModel = new UserModel { Email = user.Email, UserId = user.UserId, Naam = user.Naam,
-            //    Geboortedatum = user.Geboortedatum, HuurderId = Convert.ToInt32(GetFromClaim("huurderid")),
-            //    VerhuurderId = Convert.ToInt32(GetFromClaim("verhuurderid")),
-            //Leeftijd = leeftijd};
             return View(GetCurrentUserAsViewModel());
 
         }
 
-        public int GetAge(DateTime dob)
+        private bool CheckIf18Plus(DateTime dob)
         {
-            return DateTime.Now.Subtract(dob).Days / 365;
+            return (DateTime.Now.Subtract(dob).Days / 365 >= 18);
         }
 
         public IActionResult Login()
@@ -70,7 +64,7 @@ namespace MotoHut2._0.Controllers
             ViewData["ReturnUrl"] = returnUrl;
 
             User verifyUser = _iuser.GetHashedPasswordAndUserId(txtEmail);
-            if(verifyUser != null)
+            if (verifyUser != null)
             {
                 if (BCrypt.Net.BCrypt.Verify(txtPassword, verifyUser.Password))
                 {
@@ -89,7 +83,7 @@ namespace MotoHut2._0.Controllers
                         return Redirect("/");
                     }
                 }
-                
+
             }
             ViewBag.ErrorMsg = "Verkeerde combinatie van email en wachtwoord";
             return View("Login");
@@ -119,7 +113,7 @@ namespace MotoHut2._0.Controllers
 
             if (!_iuserCollection.CheckIfEmailExists(txtEmail))
             {
-                if(GetAge(txtBirthdate) >= 18)
+                if (CheckIf18Plus(txtBirthdate))
                 {
                     _iuserCollection.AddUser(txtName, txtEmail, BCrypt.Net.BCrypt.HashPassword(txtPassword), txtBirthdate);
                     return RedirectToAction("Index", "Home");
@@ -128,14 +122,14 @@ namespace MotoHut2._0.Controllers
                 {
                     ViewBag.ErrorMsg = "Je moet minimaal 18 jaar zijn";
                 }
-                
+
             }
             else
             {
                 ViewBag.ErrorMsg = "Email bestaat al";
             }
 
-            
+
             return View("Register");
 
 
@@ -153,7 +147,6 @@ namespace MotoHut2._0.Controllers
                 Geboortedatum = user.Geboortedatum,
                 HuurderId = Convert.ToInt32(GetFromClaim("huurderid")),
                 VerhuurderId = Convert.ToInt32(GetFromClaim("verhuurderid")),
-                Leeftijd = GetAge(user.Geboortedatum)
             };
             return userModel;
         }
@@ -178,7 +171,7 @@ namespace MotoHut2._0.Controllers
             int id = Convert.ToInt32(GetFromClaim("userid"));
             if (txtEmail == GetFromClaim("email") || !_iuserCollection.CheckIfEmailExists(txtEmail))
             {
-                if (GetAge(txtBirthdate) >= 18)
+                if (CheckIf18Plus(txtBirthdate))
                 {
                     _iuser.EditUser(txtName, txtEmail, BCrypt.Net.BCrypt.HashPassword(txtPassword), txtBirthdate, id);
                     return RedirectToAction("Index", "Account");

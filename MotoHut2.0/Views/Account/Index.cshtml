@@ -7,23 +7,23 @@
 
 <div style="border:solid;border-color:black;background-color:lightgreen;margin-bottom:30px;">
 
-                <p><h4 style="color:whitesmoke;background-color:black">Mijn account</h4></p><br/>
-                <p><b>Naam:</b> @Model.Naam</p>
-                <p><b>UserId:</b> @Model.UserId</p>
-                <p><b>E-mail:</b> @Model.Email</p>
-                <p><b>Geboortedatum:</b> @Model.Geboortedatum (@Model.Leeftijd jaar oud)</p>
-                <p><b>HuurderId:</b> @Model.HuurderId</p>
-                <p><b>VerhuurderId:</b> @Model.VerhuurderId</p>
-                <form action="@Url.Action("EditAccount","Account")" method="post">
+    <p><h4 style="color:whitesmoke;background-color:black">Mijn account</h4></p><br />
+    <p><b>Naam:</b> @Model.Naam</p>
+    <p><b>UserId:</b> @Model.UserId</p>
+    <p><b>E-mail:</b> @Model.Email</p>
+    <p><b>Geboortedatum:</b> @Model.Geboortedatum (@Model.Leeftijd jaar oud)</p>
+    <p><b>HuurderId:</b> @Model.HuurderId</p>
+    <p><b>VerhuurderId:</b> @Model.VerhuurderId</p>
+    <form action="@Url.Action("EditAccount","Account")" method="post">
 
-                      <input type="submit" value="Wijzig" class="btn btn-info my-4" />
-         
-                </form>
-                    <form action="@Url.Action("DeleteAccount","Account")" method="post">
+        <input type="submit" value="Wijzig" class="btn btn-info my-4" />
 
-             <input type="submit" value="Verwijder" class="btn btn-danger my-4" />
-         
-                </form>
-                <p>Bij verwijderen account worden alle motoren en bijbehorende huurverzoeken verwijderd.</p>
+    </form>
+    <form action="@Url.Action("DeleteAccount","Account")" method="post">
 
-                </div>
+        <input type="submit" value="Verwijder" class="btn btn-danger my-4" />
+
+    </form>
+    <p>Bij verwijderen account worden alle motoren en bijbehorende huurverzoeken verwijderd.</p>
+
+</div>

@@ -12,9 +12,9 @@ namespace Business
         public User() { }
 
         public int UserId { get; set; }
-        public string Naam { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
+        public string? Naam { get; set; }
+        public string? Email { get; set; }
+        public string? Password { get; set; }
         public DateTime Geboortedatum { get; set; }
 
 
@@ -71,9 +71,9 @@ namespace Business
         {
             return _userDal.GetUserIdWithHuurderId(huurderId);
         }
-        public DateTime GetDoBWithId(int UserId)
+        public int GetAgeWithId(int UserId)
         {
-            return _userDal.GetDoBWithId(UserId);
+            return (DateTime.Now.Subtract(_userDal.GetDoBWithId(UserId)).Days / 365);
         }
 
 

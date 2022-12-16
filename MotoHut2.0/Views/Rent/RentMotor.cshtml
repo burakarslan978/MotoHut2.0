@@ -6,38 +6,40 @@
     ViewData["Title"] = "Motor Rented";
 }
 <h1>@ViewData["Title"]</h1>
-@if(Model.MotorViewModel.MotorId > 0)
+@if (Model.MotorViewModel.MotorId > 0)
 {
     <p>Aanvraag om motor te huren is verstuurd</p>
-<h3>Details</h3>
-                    <div style="border:solid;border-color:black;background-color:lightgreen;">
+    <h3>Details</h3>
+    <div style="border:solid;border-color:black;background-color:lightgreen;">
 
-                <p><h4 style="color:whitesmoke;background-color:black">MotorId: @Model.MotorViewModel.MotorId</h4></p><br/>
-                <p><b>Merk:</b> @Model.MotorViewModel.Model</p><br/>
-                <p><b>Bouwjaar:</b> @Model.MotorViewModel.Bouwjaar</p><br/>
-                <p><b>Prijs/dag:</b> @Model.MotorViewModel.Prijs</p><br/>
-                <p><b>Ophaaldatum:</b> @Model.HuurderMotorViewModel.OphaalDatum</p><br/>
-                <p><b>Inleverdatum:</b>  @Model.HuurderMotorViewModel.InleverDatum</p><br/>
-                <p><b>Prijs per dag:</b>  €@Model.HuurderMotorViewModel.Prijs</p>
-                <p><b>Aantal dagen:</b>  @Model.HuurderMotorViewModel.Dagen</p>
-                <p><b>Totaalprijs:</b>  €@Model.HuurderMotorViewModel.TotaalPrijs</p>
+        <p><h4 style="color:whitesmoke;background-color:black">MotorId: @Model.MotorViewModel.MotorId</h4></p><br />
+        <p><b>Merk:</b> @Model.MotorViewModel.Model</p><br />
+        <p><b>Bouwjaar:</b> @Model.MotorViewModel.Bouwjaar</p><br />
+        <p><b>Prijs/dag:</b> @Model.MotorViewModel.Prijs</p><br />
+        <p><b>Ophaaldatum:</b> @Model.HuurderMotorViewModel.OphaalDatum</p><br />
+        <p><b>Inleverdatum:</b>  @Model.HuurderMotorViewModel.InleverDatum</p><br />
+        <p><b>Prijs per dag:</b>  €@Model.HuurderMotorViewModel.Prijs</p>
+        <p><b>Aantal dagen:</b>  @Model.HuurderMotorViewModel.Dagen</p>
+        <p><b>Totaalprijs:</b>  €@Model.HuurderMotorViewModel.TotaalPrijs</p>
     </div>
 }
 else if (Model.MotorViewModel.MotorId == 0)
 {
     ViewData["Title"] = "Motor Not Rented";
     <h2>Motor is niet beschikbaar op gekozen datums</h2>
-} else if (Model.MotorViewModel.MotorId == -1)
+}
+else if (Model.MotorViewModel.MotorId == -1)
 {
     <h2>Inleverdatum moet na de ophaaldatum zijn!</h2>
-} else if (Model.MotorViewModel.MotorId == -2)
+}
+else if (Model.MotorViewModel.MotorId == -2)
 {
     <h2>Ophaaldatum moet minimaal 2 uur in de toekomst zijn!</h2>
 }
 
 
 @Html.ActionLink(
-  "Go back to mainpage", 
-  "Index",                     
-  "Home",       
-  new { @class = "btn btn-info" }) 
+  "Go back to mainpage",
+  "Index",
+  "Home",
+  new { @class = "btn btn-info" })
