@@ -27,7 +27,8 @@ namespace Dal
                     SqlDataReader rdr = cmd.ExecuteReader();
                     while (rdr.Read())
                     {
-                        Motor motor = new Motor { MotorId = (int)rdr["MotorId"], VerhuurderId = (int)rdr["VerhuurderId"], Model = (string)rdr["Model"], Bouwjaar = (int)rdr["Bouwjaar"], Prijs = (int)rdr["Prijs"], Huurbaar = (bool)rdr["Huurbaar"] };
+                        Motor motor = new Motor { MotorId = (int)rdr["MotorId"], VerhuurderId = (int)rdr["VerhuurderId"], Model = (string)rdr["Model"],
+                            Bouwjaar = (int)rdr["Bouwjaar"], Prijs = (int)rdr["Prijs"], Huurbaar = (bool)rdr["Huurbaar"] };
 
                         controlList.Add(motor);
                     }
@@ -49,7 +50,8 @@ namespace Dal
                     SqlDataReader rdr = cmd.ExecuteReader();
                     while (rdr.Read())
                     {
-                        Motor motor = new Motor { MotorId = (int)rdr["MotorId"], Model = (string)rdr["Model"], Bouwjaar = (int)rdr["Bouwjaar"], Prijs = (int)rdr["Prijs"], Huurbaar = (bool)rdr["Huurbaar"] };
+                        Motor motor = new Motor { MotorId = (int)rdr["MotorId"], Model = (string)rdr["Model"], Bouwjaar = (int)rdr["Bouwjaar"],
+                            Prijs = (int)rdr["Prijs"], Huurbaar = (bool)rdr["Huurbaar"] };
 
                         controlList.Add(motor);
                     }
@@ -87,10 +89,17 @@ namespace Dal
             huurderMotorCollectionDal.DeleteHuurderMotorForMotor(motorId);
             using (var con = new SqlConnection(connectionstring))
             {
-                var cmd = new SqlCommand("DELETE FROM Motor WHERE MotorId=@MotorId", con);
-                cmd.Parameters.AddWithValue("@MotorId", motorId);
-                con.Open();
-                cmd.ExecuteNonQuery();
+                try
+                {
+                    var cmd = new SqlCommand("DELETE FROM Motor WHERE MotorId=@MotorId", con);
+                    cmd.Parameters.AddWithValue("@MotorId", motorId);
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                } catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
+                
             }
         }
 

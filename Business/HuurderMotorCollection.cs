@@ -10,9 +10,12 @@ namespace Business
     public class HuurderMotorCollection : IHuurderMotorCollection
     {
         private readonly IHuurderMotorCollectionDal _huurderMotorCollectionDal;
-        public HuurderMotorCollection(IHuurderMotorCollectionDal i)
+        private readonly IHuurderMotorDal _huurderMotorDal;
+
+        public HuurderMotorCollection(IHuurderMotorCollectionDal i, IHuurderMotorDal h)
         {
             _huurderMotorCollectionDal = i;
+            _huurderMotorDal = h;
         }
 
         public List<HuurderMotor> GetHuurderMotorList()
@@ -30,17 +33,19 @@ namespace Business
             _huurderMotorCollectionDal.DeleteHuurderMotorForMotor(motorId);
         }
 
-        public void DeclineOverlappingRents(int huurderMotorId, int motorId, DateTime ophaalDatum, DateTime inleverDatum)
+        public List<HuurderMotor> DeclineOverlappingRents(int huurderMotorId, int motorId, DateTime ophaalDatum, DateTime inleverDatum)
         {
             List<HuurderMotor> list = _huurderMotorCollectionDal.GetHuurderMotorListForMotor(motorId);
-            HuurderMotor huurderMotor = new HuurderMotor();
+            HuurderMotor huurderMotor = new HuurderMotor(_huurderMotorDal, _huurderMotorCollectionDal);
             foreach (var item in list)
             {
                 if (CheckIfOverlaps(item, huurderMotorId, ophaalDatum, inleverDatum))
                 {
                     huurderMotor.AcceptOrDeclineRent(item.HuurderMotorId, false);
+                    item.IsGeaccepteerd = false;
                 }
             }
+            return list;
         }
 
         private bool CheckIfOverlaps(HuurderMotor huurderMotor, int huurderMotorId, DateTime ophaalDatum, DateTime inleverDatum)

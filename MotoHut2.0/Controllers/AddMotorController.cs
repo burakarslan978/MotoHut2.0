@@ -20,7 +20,7 @@ namespace MotoHut2._0.Controllers
         }
         public IActionResult AddMotor()
         {
-            if (!User.Identity.IsAuthenticated)
+            if (!User?.Identity?.IsAuthenticated ?? false)
             {
                 return RedirectToAction("Login", "Account");
             }

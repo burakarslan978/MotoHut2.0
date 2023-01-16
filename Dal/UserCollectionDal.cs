@@ -49,11 +49,21 @@ namespace Dal
             DeleteVerhuurder(userId);
             using (var con = new SqlConnection(connectionstring))
             {
-                var cmd = new SqlCommand("DELETE FROM [User] WHERE UserId=@UserId", con);
-                cmd.Parameters.AddWithValue("@UserId", userId);
-                con.Open();
-                cmd.ExecuteNonQuery();
+                try
+                {
+                    var cmd = new SqlCommand("DELETE FROM [User] WHERE UserId=@UserId", con);
+                    cmd.Parameters.AddWithValue("@UserId", userId);
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
+                
             }
+            
+            
         }
 
         public void DeleteVerhuurder(int userId)

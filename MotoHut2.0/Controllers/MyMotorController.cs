@@ -22,7 +22,7 @@ namespace MotoHut2._0.Controllers
             _imotor = iMotor;
         }
 
-        public string GetFromClaim(string claim)
+        private string GetFromClaim(string claim)
         {
             try
             {
@@ -68,14 +68,7 @@ namespace MotoHut2._0.Controllers
 
         public ActionResult EditMotorButton(string txtMerk, int txtBouwjaar, int txtPrijs, string huurbaar, int motorId) 
         {
-            if (huurbaar == "Nee")
-            {
-                _imotor.EditMotor(txtMerk, txtBouwjaar, txtPrijs, false, motorId);
-            }
-            else if (huurbaar == "Ja")
-            {
-                _imotor.EditMotor(txtMerk, txtBouwjaar, txtPrijs, true, motorId);
-            }
+            _imotor.EditMotor(txtMerk, txtBouwjaar, txtPrijs, huurbaar == "Ja", motorId);
 
             return RedirectToAction("Index", "MyMotor");
         }

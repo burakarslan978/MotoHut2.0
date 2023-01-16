@@ -23,7 +23,7 @@ namespace MotoHut2._0.Controllers
             _iuser = iUser;
             _iuserCollection = iuserCollection;
         }
-        public string GetFromClaim(string claim)
+        private string GetFromClaim(string claim)
         {
             try
             {
@@ -89,7 +89,7 @@ namespace MotoHut2._0.Controllers
             return View("Login");
         }
 
-        public List<Claim> createClaims(User user)
+        private List<Claim> createClaims(User user)
         {
             return new List<Claim>
                 {

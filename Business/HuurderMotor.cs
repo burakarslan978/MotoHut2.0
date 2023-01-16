@@ -19,9 +19,11 @@ namespace Business
         public int Prijs { get; set; }
 
         private readonly IHuurderMotorDal _huurderMotorDal;
-        public HuurderMotor(IHuurderMotorDal i)
+        private readonly IHuurderMotorCollectionDal _huurderMotorCollectionDal;
+        public HuurderMotor(IHuurderMotorDal i, IHuurderMotorCollectionDal h)
         {
             _huurderMotorDal = i;
+            _huurderMotorCollectionDal = h;
         }
 
         public void AcceptOrDeclineRent(int huurderMotorId, bool AcceptRent)
@@ -30,7 +32,19 @@ namespace Business
         }
         public bool CheckAvailability(int motorId, DateTime ophaal, DateTime inlever)
         {
-            return _huurderMotorDal.CheckAvailability(motorId, ophaal, inlever);
+            List<HuurderMotor> controlList = _huurderMotorCollectionDal.GetHuurderMotorListForMotor(motorId);
+
+            if (controlList.Count > 0)
+            {
+                foreach (var item in controlList)
+                {
+                    if(ophaal <= item.InleverDatum && inlever >= item.OphaalDatum && item.IsGeaccepteerd == true)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
     }
 }

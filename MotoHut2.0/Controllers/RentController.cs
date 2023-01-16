@@ -102,8 +102,7 @@ namespace MotoHut2._0.Controllers
             {
                 items.Add(new SelectListItem
                 {
-                    Text = "" + item.MotorId + ": " + item.Bouwjaar + " "
-                + item.Model + "",
+                    Text = "" + item.MotorId + ": " + item.Bouwjaar + " " + item.Model + "",
                     Value = item.MotorId.ToString()
                 });
             }
@@ -171,7 +170,7 @@ namespace MotoHut2._0.Controllers
             return RedirectToAction("HuurLijstSelected", new { MotorId = MotorId });
         }
 
-        public string GetFromClaim(string claim)
+        private string GetFromClaim(string claim)
         {
             try
             {

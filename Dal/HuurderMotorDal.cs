@@ -12,21 +12,6 @@ namespace Dal
     {
         private readonly string connectionstring = "Server=mssqlstud.fhict.local;Database=dbi391688;User Id=dbi391688;Password=Ikd2N)E105;";
 
-        public bool CheckAvailability(int motorId, DateTime ophaal, DateTime inlever) //niet beschikbaar = false
-        {
-            HuurderMotorCollectionDal _huurderMotorCollectionDal = new HuurderMotorCollectionDal();
-            List<HuurderMotor> controlList = _huurderMotorCollectionDal.GetHuurderMotorListForMotor(motorId);
-
-            if (controlList.Count > 0)
-            {
-                foreach (var item in controlList)
-                {
-                    return !(ophaal <= item.InleverDatum && inlever >= item.OphaalDatum && item.IsGeaccepteerd == true);
-                }
-            }
-            return true;
-        }
-
         public void AcceptOrDeclineRent(int huurderMotorId, bool AcceptRent)
         {
             using (var con = new SqlConnection(connectionstring))

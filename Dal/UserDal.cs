@@ -17,7 +17,7 @@ namespace Dal
             
             using (var con = new SqlConnection(connectionstring))
             {
-                var cmd = new SqlCommand("SELECT * FROM [User] WHERE Email=@email", con);
+                var cmd = new SqlCommand("SELECT UserId,Password FROM [User] WHERE Email=@email", con);
                 cmd.Parameters.AddWithValue("@email", mail);
                 con.Open();
                 SqlDataReader sdr = cmd.ExecuteReader();
@@ -54,14 +54,15 @@ namespace Dal
             User user;
             using (var con = new SqlConnection(connectionstring))
             {
-                var cmd = new SqlCommand("SELECT * FROM [User] WHERE Email=@email", con);
+                var cmd = new SqlCommand("SELECT UserId,Email,GeboorteDatum,Naam FROM [User] WHERE Email=@email", con);
                 cmd.Parameters.AddWithValue("@email", mail);
                 con.Open();
                 SqlDataReader sdr = cmd.ExecuteReader();
 
                 if (sdr.Read())
                 {
-                    return user = new User { UserId = (int)sdr["UserId"], Email = (string)sdr["Email"], Geboortedatum = (DateTime)sdr["Geboortedatum"], Naam = (string)sdr["Naam"] };
+                    return user = new User { UserId = (int)sdr["UserId"], Email = (string)sdr["Email"],
+                        Geboortedatum = (DateTime)sdr["Geboortedatum"], Naam = (string)sdr["Naam"] };
                 }
                 else
                 {
@@ -97,7 +98,7 @@ namespace Dal
             User user;
             using (var con = new SqlConnection(connectionstring))
             {
-                var cmd = new SqlCommand("SELECT * FROM [User] WHERE UserId=@userId", con);
+                var cmd = new SqlCommand("SELECT UserId,Email,GeboorteDatum,Naam FROM [User] WHERE UserId=@userId", con);
                 cmd.Parameters.AddWithValue("@userId", UserId);
                 con.Open();
                 SqlDataReader sdr = cmd.ExecuteReader();
@@ -160,7 +161,7 @@ namespace Dal
         {
             using (var con = new SqlConnection(connectionstring))
             {
-                var cmd = new SqlCommand("SELECT * FROM Huurder WHERE UserId=@userId", con);
+                var cmd = new SqlCommand("SELECT HuurderId FROM Huurder WHERE UserId=@userId", con);
                 cmd.Parameters.AddWithValue("@userId", UserId);
                 con.Open();
                 SqlDataReader sdr = cmd.ExecuteReader();
@@ -180,7 +181,7 @@ namespace Dal
         {
             using (var con = new SqlConnection(connectionstring))
             {
-                var cmd = new SqlCommand("SELECT * FROM Verhuurder WHERE UserId=@userId", con);
+                var cmd = new SqlCommand("SELECT VerhuurderId FROM Verhuurder WHERE UserId=@userId", con);
                 cmd.Parameters.AddWithValue("@userId", UserId);
                 con.Open();
                 SqlDataReader sdr = cmd.ExecuteReader();
