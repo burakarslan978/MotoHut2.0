@@ -1,5 +1,7 @@
 using Business;
 using HuurderMotorCollectionTest.TestDal;
+using System;
+using System.ComponentModel;
 using System.Net.Mail;
 
 namespace MotoHut_Test
@@ -33,6 +35,24 @@ namespace MotoHut_Test
             Assert.IsTrue(IsAvailable);
             Assert.IsFalse(IsAvailable2);
             Assert.IsFalse(IsAvailable3);
+        }
+
+        [TestMethod]
+        [DataRow("2022-2-6", "2022-2-9", true, DisplayName = "Geen overlappende")]
+        [DataRow("2022-2-1", "2022-2-3", false, DisplayName = "Inleverdatum voor ophaaldatum")]
+        [DataRow("2022-2-4", "2022-2-8", false, DisplayName = "Ophaaldatum voor inleverdatum")]
+        public void _TestCheckAvailability(string ophaalDatum, string inleverDatum, bool expected)
+        {
+            //Arrange
+            int motorId = 2;
+           
+            var testObject = new HuurderMotor(new HuurderMotorTestDal(), new HuurderMotorCollectionTestDal());
+
+            // Act
+            bool IsAvailable = testObject.CheckAvailability(motorId, DateTime.Parse(ophaalDatum), DateTime.Parse(inleverDatum));
+
+            //Assert
+            Assert.AreEqual(expected, IsAvailable);
         }
 
         [TestMethod]
